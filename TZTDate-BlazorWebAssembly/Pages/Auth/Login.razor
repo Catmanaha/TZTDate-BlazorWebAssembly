@@ -13,8 +13,8 @@
     <ValidationSummary />
 
     <label class="form-label d-block">
-        Login:
-        <InputText name="login" class="form-control" @bind-Value=loginDto.Login></InputText>
+        Email:
+        <InputText name="email" class="form-control" @bind-Value=loginDto.Email></InputText>
     </label>
 
     <label class="form-label d-block">
@@ -35,6 +35,7 @@
 
         [Required]
         public string Password { get; set; }
+        public string IpAddress { get; set; }
     }
 
     public LoginDto loginDto { get; set; } = new();
@@ -43,18 +44,30 @@
     {
         var httpClient = new HttpClient();
 
-        var loginResponse = await httpClient.PostAsJsonAsync("http://localhost:5000/api/Auth/Login", loginDto)
+        loginDto.IpAddress = await GetIpAddress();
 
-if (loginResponse.IsSuccessStatusCode && loginResponse.StatusCode == System.Net.HttpStatusCode.OK)
+        var loginResponse = await httpClient.PostAsJsonAsync("http://localhost:5000/api/Auth/Login", loginDto);
+
+        if (loginResponse.IsSuccessStatusCode && loginResponse.StatusCode == System.Net.HttpStatusCode.OK)
         {
-            var response = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>()
+            var response = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
 
-await localStorageService.SetItemAsStringAsync("jwt", response.AccessToken);
-            await localStorageService.SetItemAsStringAsync("refreshToken", response.RefreshToken);
+            await localStorageService.SetItemAsStringAsync("jwt", response.AccessToken);
+            await localStorageService.SetItemAsStringAsync("refreshToken", response.RefreshToken.ToString());
 
             await authenticationStateProvider.GetAuthenticationStateAsync();
 
             navigationManager.NavigateTo("/");
         }
     }
+
+    public async Task<string> GetIpAddress()
+    {
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.Add("origin", string.Empty);
+        var response = await client.GetAsync("https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text");
+        var ip = await response.Content.ReadAsStringAsync();
+        return ip;
+    }
+
 }

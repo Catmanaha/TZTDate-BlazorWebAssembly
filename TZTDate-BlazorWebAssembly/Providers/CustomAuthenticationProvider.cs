@@ -23,8 +23,8 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
     {
         var jwt = await this.localStorageService.GetItemAsStringAsync("jwt");
         var refreshToken = await this.localStorageService.GetItemAsStringAsync("refreshToken");
-
-        var claimsIdentity = await this.GetClaimsIdentityAsync(jwt, Guid.Parse(refreshToken));
+        Guid.TryParse(refreshToken, out Guid refreshTokenGuid);
+        var claimsIdentity = await this.GetClaimsIdentityAsync(jwt, refreshTokenGuid);
 
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
