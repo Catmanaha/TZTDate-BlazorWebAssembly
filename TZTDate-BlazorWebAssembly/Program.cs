@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Tewr.Blazor.FileReader;
 using TZTDate_BlazorWebAssembly;
 using TZTDateBlazorWebAssembly.Providers;
 
@@ -13,6 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
+builder.Services.AddFileReaderService(o => o.UseWasmSharedBuffer = true);
 
 builder.Services.AddAuthorizationCore(options =>
 {

@@ -1,0 +1,263 @@
+@page "/Auth/Register"
+@using System.Text
+@using System.Net.Http.Headers
+@inherits RegisterBase
+@inject IFileReaderService fileReader
+
+<link rel="stylesheet" href="\css\Register.css">
+
+<div class="register-div">
+    <h1 style="text-align: center;">Register</h1>
+
+    <div id="multi-step-form-container">
+        <ul class="form-stepper form-stepper-horizontal text-center mx-auto pl-0">
+            @for (int i = 1; i <= 4; i++)
+            {
+                <li class="@(CurrentStep == i ? "form-stepper-active" : CurrentStep > i ? "form-stepper-completed" : "form-stepper-unfinished") text-center form-stepper-list"
+                    step="@i">
+                    <a class="mx-2">
+                        <span class="form-stepper-circle @(CurrentStep == i ? "" : "text-muted")">
+                            <span>@i</span>
+                        </span>
+                        <div class="label @(CurrentStep == i ? "" : "text-muted")">@StepLabels[i - 1]</div>
+                    </a>
+                </li>
+            }
+
+        </ul>
+        <EditForm Model="userRegisterDto" OnValidSubmit="OnRegisterFormSubmitAsync">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            @if (CurrentStep == 1)
+            {
+                <section id="step-1" class="form-step">
+                    <div class="mt-3">
+                        <div class="form-group">
+                            <InputText placeholder="Username" name="username" class="form-control"
+                                @bind-Value=userRegisterDto.Username></InputText>
+                        </div>
+
+                        <div style="display: flex; flex-direction: row; width: 100; gap: 30px;">
+                            <div class="form-group">
+                                <InputText placeholder="Email" name="email" class="form-control"
+                                    @bind-Value=userRegisterDto.Email></InputText>
+                            </div>
+
+                            <div class="form-group">
+                                <InputText type="password" placeholder="Password" name="password" class="form-control"
+                                    @bind-Value=userRegisterDto.Password></InputText>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: row; width: 100; gap: 30px;">
+                            <div class="form-group">
+                                <label for="birthDateTime">Birth date and time</label>
+                                <InputDate placeholder="Birth date and time" id="birthDateTime" class="form-control"
+                                    @bind-Value=userRegisterDto.BirthDateTime></InputDate>
+                            </div>
+                            <div class="form-group" style="display: flex; flex-direction: column;">
+                                <label for="gender">Gender</label>
+                                <InputSelect id="gender" @bind-Value="userRegisterDto.Gender" class="form-control">
+                                    @foreach (var option in Enum.GetValues(typeof(Gender)))
+                                    {
+                                        <option value="@option">@option</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <InputTextArea @bind-Value="userRegisterDto.Description" class="form-control"
+                                placeholder="Description" rows="10" cols="1" style="height: 100px;"></InputTextArea>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+
+                        <button id="next1" @onclick="() => NavigateToFormStep(2)" class="button btn-navigate-form-step"
+                            type="button" step_number="2">Next</button>
+                    </div>
+                </section>
+            }
+            @if (CurrentStep == 2)
+            {
+                <section id="step-2" class="form-step">
+                    <h2 class="font-normal">Location</h2>
+                    <div class="mt-3">
+                        <InputSelect @bind-Value="userRegisterDto.Country" class="form-select country"
+                            aria-label="Default select example" @oninput="async (e) => await LoadStatesAsync(e)">
+                            <option disabled selected>Select Country</option>
+                            @foreach (var option in CountryOptions)
+                            {
+                                <option value="@option.Value">@option.Text</option>
+                            }
+                        </InputSelect>
+                        <br>
+                        <InputSelect @bind-Value="userRegisterDto.State" class="form-select state"
+                            aria-label="Default select example" @oninput="async (e) => await LoadCitiesAsync(e)">
+                            <option disabled selected>Select State</option>
+                            @foreach (var option in StateOptions)
+                            {
+                                <option value="@option.Value">@option.Text</option>
+                            }
+                        </InputSelect>
+                        <br>
+                        <InputSelect @bind-Value="userRegisterDto.City" class="form-select city"
+                            aria-label="Default select example">
+                            <option disabled selected>Select City</option>
+                            @foreach (var option in CityOptions)
+                            {
+                                <option value="@option.Value">@option.Text</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mt-3">
+                        <button @onclick="() => NavigateToFormStep(1)" class="button btn-navigate-form-step" type="button"
+                            step_number="1">Prev</button>
+                        <button @onclick="() => NavigateToFormStep(3)" id="next2" class="button btn-navigate-form-step"
+                            type="button" step_number="3">Next</button>
+                    </div>
+                </section>
+            }
+            @if (CurrentStep == 3)
+            {
+                <section id="step-3" class="form-step">
+                    <h2 class="font-normal">Preferences</h2>
+                    <div class="mt-3">
+                        <div class="form-group" style="display: flex; flex-direction: column;">
+                            <label for="searchingGender">Searching Gender</label>
+                            <InputSelect name="searchingGender" @bind-Value="userRegisterDto.SearchingGender">
+                                @foreach (var value in Enum.GetValues(typeof(Gender)))
+                                {
+                                    <option value="@value">@value</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="searchingAgeStart">Searching Age Start</label>
+                            <InputNumber id="searchingAgeStart" @bind-Value="userRegisterDto.SearchingAgeStart"
+                                class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="searchingAgeEnd">Searching Age End</label>
+                            <InputNumber id="searchingAgeEnd" @bind-Value="userRegisterDto.SearchingAgeEnd"
+                                class="form-control" />
+                        </div>
+                        <p id="errorMessage" class="text-danger"></p>
+                        <div>
+                            <label style="font-weight: 500;">Interests</label>
+                            <br>
+                            @foreach (var interest in InterestsList)
+                            {
+                                <label>
+                                    <input type="checkbox"
+                                        @onchange="((ChangeEventArgs e) => UpdateInterests(interest.Label, (bool)e.Value))" />
+                                    @interest.Label
+                                </label>
+                            }
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button @onclick="() => NavigateToFormStep(2)" class="button btn-navigate-form-step" type="button"
+                            step_number="2">Prev</button>
+                        <button @onclick="() => NavigateToFormStep(4)" id="next3" class="button btn-navigate-form-step"
+                            type="button" step_number="4">Next</button>
+                    </div>
+                </section>
+            }
+            @if (CurrentStep == 4)
+            {
+                <section id="step-4" class="form-step">
+                    <h2 class="font-normal">Photos</h2>
+                    <div class="mt-3">
+                        <div class="imageGrid">
+                            <div class="imageWrapper">
+                                @for (int i = 0; i < 6; i++)
+{
+    var index = i;
+    <label for="image@i" class="uploadButton">Upload Image</label>
+    <InputFile id="image@i" accept="image/*" OnChange="@((e) => HandleFileUpload(e, index))" />
+}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button @onclick="() => NavigateToFormStep(3)" class="button btn-navigate-form-step" type="button"
+                            step_number="3">Prev</button>
+                        <button id="save" class="button submit-btn" type="submit">Save</button>
+                    </div>
+                </section>
+            }
+
+
+        </EditForm>
+
+    </div>
+</div>
+
+@code {
+
+    private async Task OnRegisterFormSubmitAsync(EditContext editContext)
+    {
+        await HandleValidSubmit();
+    }
+
+    override protected async Task OnInitializedAsync()
+    {
+        await LoadCountries();
+    }
+
+    List<IBrowserFile> images = new List<IBrowserFile>(new IBrowserFile[6]);
+
+    async Task HandleFileUpload(InputFileChangeEventArgs e, int index)
+{
+    if (index >= 0 && index < images.Count)
+    {
+        images[index] = e.File;
+    }
+    else
+    {
+        Console.WriteLine($"Invalid index: {index}");
+    }
+}
+
+    async Task HandleValidSubmit()
+{
+    var content = new MultipartFormDataContent();
+
+    for (int i = 0; i < images.Count; i++)
+    {
+        var image = images[i];
+        if (image != null)
+        {
+            Console.WriteLine($"Processing image {i+1}");
+
+            var stream = image.OpenReadStream();
+            var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var byteArrayContent = new ByteArrayContent(memoryStream.ToArray());
+
+            Console.WriteLine($"Image {i+1} size: {memoryStream.Length} bytes");
+
+            content.Add(byteArrayContent, $"Image{i + 1}", image.Name);
+        }
+    }
+
+    // Add other properties of the DTO to the content
+    var properties = typeof(UserRegisterDto).GetProperties();
+    foreach (var property in properties)
+    {
+        if (property.PropertyType != typeof(byte[]))
+        {
+            var value = property.GetValue(userRegisterDto);
+            if (value != null)
+            {
+                content.Add(new StringContent(value.ToString()), property.Name);
+            }
+        }
+    }
+
+    var httpClient = new HttpClient();
+    await httpClient.PostAsync("http://localhost:5000/api/Auth/Register", content);
+}
+}

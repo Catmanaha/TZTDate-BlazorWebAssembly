@@ -59,15 +59,36 @@
 
             navigationManager.NavigateTo("/");
         }
+        else
+        {
+            var error = await loginResponse.Content.ReadAsStringAsync();
+            Console.WriteLine(error);
+        }
     }
 
     public async Task<string> GetIpAddress()
     {
+        return await GetWithCorsAsync("https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text");
+    }
+
+    public async Task<string> GetWithCorsAsync(string url)
+    {
+        var corsApiHost = "cors-anywhere.herokuapp.com";
+        var corsApiUrl = "https://" + corsApiHost + "/";
+        var origin = "www.flirtify.tech";
+
+        var uri = new Uri(url);
+        if (uri.Host != origin && uri.Host != corsApiHost)
+        {
+            url = corsApiUrl + url;
+        }
+
         var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("origin", string.Empty);
-        var response = await client.GetAsync("https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text");
-        var ip = await response.Content.ReadAsStringAsync();
-        return ip;
+        client.DefaultRequestHeaders.Add("origin", origin);
+        var response = await client.GetAsync(url);
+        var content = await response.Content.ReadAsStringAsync();
+
+        return content;
     }
 
 }
