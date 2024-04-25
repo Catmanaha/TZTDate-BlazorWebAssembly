@@ -1,8 +1,7 @@
-
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Components.Forms;
+using TZTDateBlazorWebAssembly.Enums;
 
-namespace TZTDateBlazorWebAssembly.Models;
+namespace TZTDateBlazorWebAssembly.Dtos;
 
 public class UserRegisterDto
 {
@@ -20,7 +19,7 @@ public class UserRegisterDto
     public DateTime BirthDateTime { get; set; }
 
     [Required(ErrorMessage = "Gender cannot be empty")]
-    public Gender Gender { get; set; }
+    public Gender Gender { get; set; } = Gender.Male;
 
     [Required(ErrorMessage = "Country cannot be empty")]
     public string? Country { get; set; }
@@ -35,7 +34,7 @@ public class UserRegisterDto
     public string? Description { get; set; }
 
     [Required]
-    public Gender? SearchingGender { get; set; }
+    public Gender? SearchingGender { get; set; } = Gender.Male;
 
     [Required]
     [Range(int.MinValue, double.MaxValue, ErrorMessage = "SearchingAgeStart cannot be negative or be more than 100")]

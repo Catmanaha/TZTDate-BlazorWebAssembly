@@ -1,4 +1,4 @@
-namespace TZTDateBlazorWebAssembly.Models;
+namespace TZTDateBlazorWebAssembly.Enums;
 
 public enum Gender
 {

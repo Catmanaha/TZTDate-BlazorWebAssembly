@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using TZTDateBlazorWebAssembly.Requests;
 using TZTDateBlazorWebAssembly.Responses;
+using TZTDateBlazorWebAssembly.Services.Base;
 
 namespace TZTDateBlazorWebAssembly.Providers;
 
@@ -13,10 +14,12 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
 {
     private readonly JwtSecurityTokenHandler jwtTokenHandler;
     private readonly ILocalStorageService localStorageService;
+    private readonly IIpifyApiService ipifyApiService;
 
-    public CustomAuthenticationProvider(ILocalStorageService localStorageService)
+    public CustomAuthenticationProvider(ILocalStorageService localStorageService, IIpifyApiService ipifyApiService)
     {
         this.localStorageService = localStorageService;
+        this.ipifyApiService = ipifyApiService;
         this.jwtTokenHandler = new JwtSecurityTokenHandler();
     }
 
@@ -74,7 +77,7 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
                        {
                            AccessToken = jwt,
                            RefreshToken = refreshToken,
-                           IpAddress = await GetIpAddress()
+                           IpAddress = await ipifyApiService.GetCurrentIpAddress()
                        }
 
                     );
@@ -98,30 +101,5 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
         var token = jwtTokenHandler.ReadJwtToken(jwt);
 
         return new ClaimsIdentity(token.Claims, "jwt");
-    }
-
-    public async Task<string> GetIpAddress()
-    {
-        return await GetWithCorsAsync("https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text");
-    }
-    
-    public async Task<string> GetWithCorsAsync(string url)
-    {
-        var corsApiHost = "cors-anywhere.herokuapp.com";
-        var corsApiUrl = "https://" + corsApiHost + "/";
-        var origin = "www.flirtify.tech";
-
-        var uri = new Uri(url);
-        if (uri.Host != origin && uri.Host != corsApiHost)
-        {
-            url = corsApiUrl + url;
-        }
-
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("origin", origin);
-        var response = await client.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-
-        return content;
     }
 }

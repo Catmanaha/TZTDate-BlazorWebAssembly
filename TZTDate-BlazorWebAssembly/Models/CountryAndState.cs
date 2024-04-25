@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace TZTDateBlazorWebAssembly.Models;
 
-public class Country
+public class CountryAndState
 {
     [JsonPropertyName("name")]
     public string Name { get; set; }
