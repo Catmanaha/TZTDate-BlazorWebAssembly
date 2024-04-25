@@ -1,15 +1,11 @@
 @page "/Auth/Login"
-@using TZTDate_BlazorWebAssembly.Dtos
-@inject AuthenticationStateProvider authenticationStateProvider
-@inject ILocalStorageService localStorageService
-@inject NavigationManager navigationManager
 @inherits LoginBase
 
 <PageTitle>Login</PageTitle>
 
 <h1>Login</h1>
 
-<EditForm class="login-form" Model="this.loginDto" OnValidSubmit="OnLoginFormSubmitAsync">
+<EditForm Model="loginDto" OnValidSubmit="OnLoginFormSubmitAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -24,39 +20,4 @@
     </label>
 
     <button class="btn btn-success">Login</button>
-</EditForm>
-
-@code {
-    public LoginDto loginDto { get; set; } = new();
-    private async Task OnLoginFormSubmitAsync(EditContext editContext)
-    {
-        var httpClient = new HttpClient();
-
-        loginDto.IpAddress = await GetIpAddress();
-
-        var loginResponse = await httpClient.PostAsJsonAsync("http://localhost:5000/api/Auth/Login", loginDto);
-
-        if (loginResponse.IsSuccessStatusCode && loginResponse.StatusCode == System.Net.HttpStatusCode.OK)
-        {
-            var response = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
-
-            await localStorageService.SetItemAsStringAsync("jwt", response.AccessToken);
-            await localStorageService.SetItemAsStringAsync("refreshToken", response.RefreshToken.ToString());
-
-            await authenticationStateProvider.GetAuthenticationStateAsync();
-
-            navigationManager.NavigateTo("/Home/Main");
-        }
-    }
-
-    public async Task<string> GetIpAddress()
-    {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("origin", string.Empty);
-        var response = await client.GetAsync("https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text");
-        var ip = await response.Content.ReadAsStringAsync();
-        return ip;
-    }
-
-}
 </EditForm>

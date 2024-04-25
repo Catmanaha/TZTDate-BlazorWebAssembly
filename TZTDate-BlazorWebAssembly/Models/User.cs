@@ -1,3 +1,5 @@
+using TZTDateBlazorWebAssembly.Enums;
+
 namespace TZTDate_BlazorWebAssembly.Models;
 
 public class User

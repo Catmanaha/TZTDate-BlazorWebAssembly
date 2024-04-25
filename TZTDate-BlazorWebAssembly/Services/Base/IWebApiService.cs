@@ -1,3 +1,4 @@
+using TZTDate_BlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Dtos;
 
 namespace TZTDateBlazorWebAssembly.Services.Base;
@@ -6,4 +7,5 @@ public interface IWebApiService
 {
     public Task Register(UserRegisterDto userRegisterDto);
     public Task Login(UserLoginDto loginDto);
+    public Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, string searchGender);
 }
