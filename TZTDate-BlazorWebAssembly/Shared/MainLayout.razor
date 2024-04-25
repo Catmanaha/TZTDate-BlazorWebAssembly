@@ -1,5 +1,7 @@
 @inherits LayoutComponentBase
-@inject IJSRuntime JSRuntime
+
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject ILocalStorageService localStorageService
 
 <header>
     <a href="/Home/Main" class="logo">TZT<span>Date</span></a>
@@ -10,9 +12,8 @@
                 <a href="/Home/Index">Home</a>
                 <a href="/User/Profiles">Profiles</a>
                 <a href="/Forum/Index">Forum</a>
-                <a href="/LoveCalculator/Index">Love Calculator</a>
                 <a href="/User/Account">Account</a>
-                <a href="/Home/Main" @onclick="Logout"><span class="material-symbols-outlined">logout</span></a>
+                <a href="/Home/Main" @onclick="LogoutAsync"><span class="material-symbols-outlined">logout</span></a>
             </Authorized>
             <NotAuthorized>
                 <a href="/Auth/Login" class="login">Login</a>
@@ -22,36 +23,15 @@
     </nav>
 </header>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <AuthorizeView>
-                <NotAuthorized>
-                    <a href="/Auth/Login">Login</a>
-                    <a href="/Auth/Register">Register</a>
-                </NotAuthorized>
-                <Authorized>
-                    <button @onclick="LogoutAsync">Logout</button>
-                </Authorized>
-            </AuthorizeView>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@Body
 
 @code {
-    async Task Logout()
+    public async Task LogoutAsync()
     {
-        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "jwt");
-        await JSRuntime.InvokeVoidAsync("window.location.reload", "");
+        await localStorageService.RemoveItemAsync("jwt");
+        await localStorageService.RemoveItemAsync("refreshToken");
+
+        await authenticationStateProvider.GetAuthenticationStateAsync();
     }
 }
 
-@Body

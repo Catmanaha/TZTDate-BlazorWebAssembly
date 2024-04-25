@@ -1,6 +1,8 @@
 using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Newtonsoft.Json;
+using TZTDate_BlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Responses;
 using TZTDateBlazorWebAssembly.Services.Base;
@@ -23,6 +25,24 @@ public class WebApiService : IWebApiService
         this.authenticationStateProvider = authenticationStateProvider;
         this.ipifyApiService = ipifyApiService;
         this.httpClient = httpClient;
+    }
+
+    public async Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, string searchGender)
+    {
+
+        var url =
+        $"User/Profiles?userId={userId}&searchByName={searchByName}&startAge={startAge}&endAge={endAge}&interests={interests}&searchGender={searchGender}";
+
+        var response = await httpClient.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        string json = await response.Content.ReadAsStringAsync();
+
+        ProfilesDto profiles = JsonConvert.DeserializeObject<ProfilesDto>(json);
+
+        return profiles;
     }
 
     public async Task Login(UserLoginDto loginDto)

@@ -1,10 +1,5 @@
 @page "/User/Profiles"
-@inject IJSRuntime JSRuntime
-@using Newtonsoft.Json
-@using System.Security.Claims
-@using TZTDate_BlazorWebAssembly.Dtos
-@using TZTDate_BlazorWebAssembly.Models
-@using System.IdentityModel.Tokens.Jwt
+@inherits ProfilesBase
 
 <PageTitle>Profiles</PageTitle>
 
@@ -28,64 +23,3 @@
         </a>
     }
 </div>
-
-@code {
-    public string? SearchingByName { get; set; }
-    public int? SearchingStartAge { get; set; }
-    public int? SearchingEndAge { get; set; }
-    public string? SearchingInterests { get; set; }
-    public string? SearchingGender { get; set; }
-
-    public ProfilesDto? profiles { get; set; }
-
-    [Inject]
-    private HttpClient httpClient { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        profiles = await GetProfiles();
-
-        SearchingStartAge = profiles.searchingStartAge;
-        SearchingEndAge = profiles.searchingEndAge;
-        SearchingGender = profiles.searchingGender;
-    }
-
-    private async Task<ProfilesDto> GetProfiles()
-    {
-        string id = await GetUserIdFromJwtAsync();
-
-        var url =
-        $"http://localhost:5000/api/User/Profiles?userId={id}&searchByName={SearchingByName}&startAge={SearchingStartAge}&endAge={SearchingEndAge}&interests={SearchingInterests}&searchGender={SearchingGender}";
-
-        var response = await httpClient.GetAsync(url);
-
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        string json = await response.Content.ReadAsStringAsync();
-
-        ProfilesDto profiles = JsonConvert.DeserializeObject<ProfilesDto>(json);
-
-        return profiles;
-    }
-
-    private async Task<string> GetUserIdFromJwtAsync()
-    {
-        string jwtToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "jwt");
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.ReadJwtToken(jwtToken);
-
-        var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-        if (userIdClaim != null)
-        {
-            return userIdClaim.Value.ToString();
-        }
-
-        return null;
-    }
-
-    public async Task FilterSearch()
-    {
-        profiles = await GetProfiles();
-    }
-}
