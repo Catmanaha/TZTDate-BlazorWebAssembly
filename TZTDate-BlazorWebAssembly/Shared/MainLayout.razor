@@ -1,7 +1,26 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
 
-@inject AuthenticationStateProvider authenticationStateProvider
-@inject ILocalStorageService localStorageService
+<header>
+    <a href="/Home/Main" class="logo">TZT<span>Date</span></a>
+
+    <nav class="navbar">
+        <AuthorizeView>
+            <Authorized>
+                <a href="/Home/Index">Home</a>
+                <a href="/User/Profiles">Profiles</a>
+                <a href="/Forum/Index">Forum</a>
+                <a href="/LoveCalculator/Index">Love Calculator</a>
+                <a href="/User/Account">Account</a>
+                <a href="/Home/Main" @onclick="Logout"><span class="material-symbols-outlined">logout</span></a>
+            </Authorized>
+            <NotAuthorized>
+                <a href="/Auth/Login" class="login">Login</a>
+                <a href="/Auth/Register" class="register">Register</a>
+            </NotAuthorized>
+        </AuthorizeView>
+    </nav>
+</header>
 
 <div class="page">
     <div class="sidebar">
@@ -28,11 +47,11 @@
 </div>
 
 @code {
-    public async Task LogoutAsync()
+    async Task Logout()
     {
-        await localStorageService.RemoveItemAsync("jwt");
-        await localStorageService.RemoveItemAsync("refreshToken");
-
-        await authenticationStateProvider.GetAuthenticationStateAsync();
+        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "jwt");
+        await JSRuntime.InvokeVoidAsync("window.location.reload", "");
     }
 }
+
+@Body

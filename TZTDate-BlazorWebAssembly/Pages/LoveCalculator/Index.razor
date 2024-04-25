@@ -1,0 +1,40 @@
+@page "/LoveCalculator/Index"
+@using TZTDate_BlazorWebAssembly.Dtos
+@inject IJSRuntime JSRuntime
+
+<PageTitle>LoveCalculator</PageTitle>
+
+<EditForm style="margin-top: 86px;" Model="@this.loveCalculatorDto" OnValidSubmit="CalculateLove">
+    <InputText id="firstName" @bind-Value="@this.loveCalculatorDto.fname"></InputText>
+    <InputText id="secondName" @bind-Value="@this.loveCalculatorDto.sname"></InputText>
+    <button type="submit">Calculate</button>
+</EditForm>
+
+<p>@responseMessage</p>
+
+@code {
+    private string responseMessage = "";
+    private LoveCalculatorDto loveCalculatorDto = new();
+
+    [Inject]
+    private HttpClient HttpClient { get; set; }
+
+    private async Task CalculateLove()
+    {
+        var response = await HttpClient.PostAsJsonAsync("http://localhost:5000/api/LoveCalculator/Index", loveCalculatorDto);
+
+
+        var message = JsonSerializer.Deserialize<LoveCalculatorDto>((await response.Content.ReadAsStringAsync()));
+
+        await JSRuntime.InvokeVoidAsync("alert", message.result);
+
+        if (response.IsSuccessStatusCode)
+        {
+            responseMessage = message.result;
+        }
+        else
+        {
+            responseMessage = "Error: " + response.StatusCode;
+        }
+    }
+}

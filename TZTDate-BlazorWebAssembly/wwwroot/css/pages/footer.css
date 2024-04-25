@@ -1,0 +1,82 @@
+footer {
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+    padding: 30px 150px;
+    background-color: #fff; 
+}
+
+footer div {
+    display: flex;
+    flex-direction: column;
+}
+
+footer h3 {
+    font-weight: 800;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+footer
+.expand-more, 
+.expand-less {
+    position: absolute;
+    background-color: transparent;
+    margin-top: 70px;
+    text-align: start;
+    padding: 15px 20px;
+    width: 250px;
+    border-radius: 15px;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+footer .expand-more {
+    border-width: 1px;
+    border-color: #000;
+    border-style: solid solid none solid;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.expand-more-div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 69px;
+}
+
+.expand-more-div button {
+    background-color: transparent;
+    border-color: #000;
+    border-width: 1px;
+    padding: 10px 20px;
+    text-align: start;
+    border-style: none solid none solid;
+    width: 250px;
+}
+
+.expand-more-div button:hover {
+    background-color: #f6f6f6;
+}
+
+footer button span {
+    position: absolute;
+    margin-left: 120px;
+}
+
+footer a {
+    margin-top: 20px;
+    color: #000;
+    font-size: 15px;
+    font-weight: lighter !important;
+}
+
+footer a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+footer p {
+    font-weight: 10;
+    font-size: 13px;
+    margin-top: 40px;
+}
