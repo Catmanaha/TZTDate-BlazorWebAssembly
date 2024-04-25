@@ -1,9 +1,9 @@
 @page "/Auth/Login"
 @using TZTDate_BlazorWebAssembly.Dtos
-
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject ILocalStorageService localStorageService
 @inject NavigationManager navigationManager
+@inherits LoginBase
 
 <PageTitle>Login</PageTitle>
 
@@ -59,3 +59,4 @@
     }
 
 }
+</EditForm>
