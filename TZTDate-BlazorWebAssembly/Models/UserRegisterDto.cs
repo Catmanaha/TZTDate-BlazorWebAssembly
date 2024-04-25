@@ -48,9 +48,15 @@ public class UserRegisterDto
     [Required(ErrorMessage = "Interests cannot be empty")]
     public string Interests { get; set; }
     public byte[]? Image1 { get; set; }
+    public string Image1Name { get; set; }
     public byte[]? Image2 { get; set; }
+    public string Image2Name { get; set; }
     public byte[]? Image3 { get; set; }
+    public string Image3Name { get; set; }
     public byte[]? Image4 { get; set; }
+    public string Image4Name { get; set; }
     public byte[]? Image5 { get; set; }
+    public string Image5Name { get; set; }
     public byte[]? Image6 { get; set; }
+    public string Image6Name { get; set; }
 }
