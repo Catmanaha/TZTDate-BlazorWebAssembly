@@ -1,0 +1,210 @@
+.login-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 105vh;
+    margin-top: -50px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.login-img {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    opacity: 0.8;
+    margin-top: 86px;
+}
+
+.ring {
+    background-color: transparent;
+    border: 1px solid #000;
+    border-radius: 40px;
+    position: relative;
+    width: 450px;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ring i {
+    position: absolute;
+    inset: 0;
+    border: 2px solid #ffa2ff;
+    transition: 0.5s;
+}
+
+.ring i:nth-child(1) {
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    animation: animate 6s linear infinite;
+}
+
+.ring i:nth-child(2) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate 4s linear infinite;
+}
+
+.ring i:nth-child(3) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate2 10s linear infinite;
+}
+
+.ring:hover i {
+    border: 6px solid var(--clr);
+    filter: drop-shadow(0 0 20px var(--clr));
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.login {
+    position: absolute;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login h2 {
+    font-size: 2em;
+    color: #000;
+    margin-bottom: -20px;
+}
+
+.login .inputBx {
+    position: relative;
+    width: 100%;
+    z-index: 1111 !important;
+}
+
+.inputBx input {
+    margin-top: 10px;
+    width: 330px;
+    height: 50px;
+    padding: 10px 12px 12px 20px;
+    font-size: 17px;
+    border-radius: 30px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
+
+.form-control {
+    z-index: 100;
+}
+
+.inputBx input::placeholder {
+    font-size: 17px;
+    margin-top: -10px;
+}
+
+.inputBx input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
+
+.inputBx input:active {
+    transform: scale(0.95);
+}
+
+.inputBx input:focus {
+    border: 2px solid grey;
+}
+
+.login .links {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.login .links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.inputBx button {
+    margin-top: -10px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: 1px solid #000;
+    border-radius: 30px;
+    width: 110%;
+    font-weight: 100;
+    letter-spacing: .1rem;
+    color: #000;
+    z-index: 1;
+    overflow: hidden;
+    transition: .5s;
+    font-size: 16px;
+}
+
+
+.inputBx button:hover {
+    color: #fff;
+    background-color: transparent;
+}
+
+.inputBx button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #000;
+    z-index: -1;
+    transition: .5s;
+}
+
+.inputBx button:active {
+    font-size: 18px;
+}
+
+.inputBx button:hover::before {
+    width: 100%;
+}
+
+.inputBx span {
+    margin-left: 65px;
+}
+
+.inputBx span a {
+    color: #000;
+}
+
+.inputBx span a:hover {
+    text-decoration: underline;
+}
+
+.form-controll {
+    
+}

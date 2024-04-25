@@ -1,0 +1,84 @@
+#index1 {
+    margin-top: 86px;
+    padding: 30px 0 100px 0;
+    width: 100%;
+    background-color: #ffccff96;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#index1 h1 {
+    padding: 20px 150px 20px 150px;
+    font-size: 60px;
+    font-weight: bold;
+    color: #e80000;
+    text-align: center;
+}
+
+#index1 h1 span {
+    color: #2f00ff;
+}
+
+#index1 p {
+    padding: 0px 150px;
+    font-size: 40px;
+    text-align: center;
+}
+
+#index1 > div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+
+#index1 > div div {
+    width: 400px;
+    height: 300px;
+    margin-top: 40px;
+    background-color: #ffefff96;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    box-shadow: 0px 0px 10px #f8a8ff;
+}
+
+#index1 > div div p {
+    width: 100%;
+    font-size: 17px;
+    margin-top: 130px;
+}
+
+#index1 > div div i {
+    color: #666666;
+} 
+
+#index1 > div div a {
+    position: absolute;
+    margin-top: 300px;
+    margin-left: 170px;
+    padding: 8px 8px 0px 8px;
+    border-radius: 50%;
+    background-color: #ffa8f6;
+}
+
+#index1 > div div span {
+    font-size: 35px;
+    margin-top: 1px;
+    color: #fff;
+}
+
+#index1 > div div img {
+    position: absolute;
+    margin-left: 125px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-top: -100px;
+    border: 3px solid #ffa8f6;
+}

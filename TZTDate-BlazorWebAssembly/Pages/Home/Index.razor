@@ -1,0 +1,65 @@
+@page "/Home/Index"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>Home</PageTitle>
+
+@* @model DateUserAndRecomendations
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section id="index1">
+    <h1>Welcome to TZT Date, <span>@Model.Me.Username</span></h1>
+    @if (Model.Me.SearchingGender == Gender.Female)
+    {
+        <p>Top @Model.RecomendationUsers.Count() female recomendations for you!</p>
+    }
+    @if (Model.Me.SearchingGender == Gender.Male)
+    {
+        <p>Top @Model.RecomendationUsers.Count() male recomendations for you!</p>
+    }
+    <div>
+        @foreach (var user in @Model.RecomendationUsers)
+        {
+            <div>
+                @{
+                    string image = user.ProfilePicPaths[0];
+                }
+                <img src="~/Assets/@image">
+                <p>@user.Username</p>
+                <i>@user.GetZodiacSign()</i>
+                <a href="/User/Details?id=@user.Id"><span class="material-symbols-outlined">info</span></a>
+            </div>
+        }
+    </div>
+</section> *@
+
+<section id="index1">
+    <h1>Welcome to TZT Date, <span>User</span></h1>
+    <p>Top recomendations for you!</p>
+    <div>
+        <div>
+            <img
+                src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1713744000&semt=ais">
+            <p>User</p>
+            <i>Taurus</i>
+            <a href="/User/Details?id=1"><span class="material-symbols-outlined">info</span></a>
+        </div>
+        <div>
+            <img
+                src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1713744000&semt=ais">
+            <p>User</p>
+            <i>Taurus</i>
+            <a href="/User/Details?id=1"><span class="material-symbols-outlined">info</span></a>
+        </div>
+        <div>
+            <img
+                src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1713744000&semt=ais">
+            <p>User</p>
+            <i>Taurus</i>
+            <a href="/User/Details?id=1"><span class="material-symbols-outlined">info</span></a>
+        </div>
+    </div>
+</section>

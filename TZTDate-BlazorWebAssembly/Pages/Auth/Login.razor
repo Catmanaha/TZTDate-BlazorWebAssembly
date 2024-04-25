@@ -1,4 +1,5 @@
 @page "/Auth/Login"
+@using TZTDate_BlazorWebAssembly.Dtos
 
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject ILocalStorageService localStorageService
@@ -8,7 +9,7 @@
 
 <h1>Login</h1>
 
-<EditForm Model="loginDto" OnValidSubmit="OnLoginFormSubmitAsync">
+<EditForm class="login-form" Model="this.loginDto" OnValidSubmit="OnLoginFormSubmitAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -26,20 +27,7 @@
 </EditForm>
 
 @code {
-    public class LoginDto
-    {
-
-        [EmailAddress]
-        [Required]
-        public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
-        public string IpAddress { get; set; }
-    }
-
     public LoginDto loginDto { get; set; } = new();
-
     private async Task OnLoginFormSubmitAsync(EditContext editContext)
     {
         var httpClient = new HttpClient();
@@ -57,7 +45,7 @@
 
             await authenticationStateProvider.GetAuthenticationStateAsync();
 
-            navigationManager.NavigateTo("/");
+            navigationManager.NavigateTo("/Home/Main");
         }
     }
 
