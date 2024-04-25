@@ -4,7 +4,9 @@ using System.Security.Claims;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using TZTDateBlazorWebAssembly.Requests;
 using TZTDateBlazorWebAssembly.Responses;
+using TZTDateBlazorWebAssembly.Services.Base;
 
 namespace TZTDateBlazorWebAssembly.Providers;
 
@@ -12,10 +14,12 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
 {
     private readonly JwtSecurityTokenHandler jwtTokenHandler;
     private readonly ILocalStorageService localStorageService;
+    private readonly IIpifyApiService ipifyApiService;
 
-    public CustomAuthenticationProvider(ILocalStorageService localStorageService)
+    public CustomAuthenticationProvider(ILocalStorageService localStorageService, IIpifyApiService ipifyApiService)
     {
         this.localStorageService = localStorageService;
+        this.ipifyApiService = ipifyApiService;
         this.jwtTokenHandler = new JwtSecurityTokenHandler();
     }
 
@@ -37,7 +41,7 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
 
     private async Task<ClaimsIdentity> GetClaimsIdentityAsync(string? jwt, Guid? refreshToken)
     {
-        if (string.IsNullOrWhiteSpace(jwt) || refreshToken == null)
+        if (string.IsNullOrWhiteSpace(jwt) || refreshToken is null)
         {
             return new ClaimsIdentity();
         }
@@ -68,11 +72,15 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
 
                 var updateTokenResponse = await httpClient.PutAsJsonAsync(
                     "http://localhost:5000/api/Auth/UpdateToken",
-                    new
-                    {
-                        AccessToken = jwt,
-                        RefreshToken = refreshToken
-                    });
+
+                       new UpdateTokenRequest
+                       {
+                           AccessToken = jwt,
+                           RefreshToken = refreshToken,
+                           IpAddress = await ipifyApiService.GetCurrentIpAddress()
+                       }
+
+                    );
 
                 if (updateTokenResponse.IsSuccessStatusCode && updateTokenResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {

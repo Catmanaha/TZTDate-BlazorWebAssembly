@@ -1,8 +1,5 @@
 @page "/Auth/Login"
-
-@inject AuthenticationStateProvider authenticationStateProvider
-@inject ILocalStorageService localStorageService
-@inject NavigationManager navigationManager
+@inherits LoginBase
 
 <PageTitle>Login</PageTitle>
 
@@ -24,50 +21,3 @@
 
     <button class="btn btn-success">Login</button>
 </EditForm>
-
-@code {
-    public class LoginDto
-    {
-
-        [EmailAddress]
-        [Required]
-        public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
-        public string IpAddress { get; set; }
-    }
-
-    public LoginDto loginDto { get; set; } = new();
-
-    private async Task OnLoginFormSubmitAsync(EditContext editContext)
-    {
-        var httpClient = new HttpClient();
-
-        loginDto.IpAddress = await GetIpAddress();
-
-        var loginResponse = await httpClient.PostAsJsonAsync("http://localhost:5000/api/Auth/Login", loginDto);
-
-        if (loginResponse.IsSuccessStatusCode && loginResponse.StatusCode == System.Net.HttpStatusCode.OK)
-        {
-            var response = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
-
-            await localStorageService.SetItemAsStringAsync("jwt", response.AccessToken);
-            await localStorageService.SetItemAsStringAsync("refreshToken", response.RefreshToken.ToString());
-
-            await authenticationStateProvider.GetAuthenticationStateAsync();
-
-            navigationManager.NavigateTo("/");
-        }
-    }
-
-    public async Task<string> GetIpAddress()
-    {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("origin", string.Empty);
-        var response = await client.GetAsync("https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text");
-        var ip = await response.Content.ReadAsStringAsync();
-        return ip;
-    }
-
-}
