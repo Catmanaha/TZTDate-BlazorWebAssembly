@@ -33,24 +33,8 @@ public class ProfilesBase : ComponentBase
 
     private async Task<ProfilesDto> GetProfiles()
     {
-        var id = await GetUserIdFromJwtAsync();
+        var id = await webApiService.GetUserIdFromJwt();
         return await webApiService.GetProfiles(id, SearchingByName, SearchingStartAge, SearchingEndAge, SearchingInterests, SearchingGender);
-    }
-
-    private async Task<string> GetUserIdFromJwtAsync()
-    {
-        string jwtToken = await localStorageService.GetItemAsStringAsync("jwt");
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.ReadJwtToken(jwtToken);
-
-        var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-        if (userIdClaim != null)
-        {
-            return userIdClaim.Value.ToString();
-        }
-
-        return null;
     }
 
     public async Task FilterSearch()

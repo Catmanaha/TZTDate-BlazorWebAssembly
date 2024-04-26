@@ -1,4 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
@@ -27,12 +30,19 @@ public class WebApiService : IWebApiService
         this.httpClient = httpClient;
     }
 
+    public async Task<string> GetAccountData(int userId)
+    {
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await localStorageService.GetItemAsStringAsync("jwt"));
+        return await httpClient.GetStringAsync($"User/Account?id={userId}");
+    }
+
     public async Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, string searchGender)
     {
 
         var url =
         $"User/Profiles?userId={userId}&searchByName={searchByName}&startAge={startAge}&endAge={endAge}&interests={interests}&searchGender={searchGender}";
 
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await localStorageService.GetItemAsStringAsync("jwt"));
         var response = await httpClient.GetAsync(url);
 
         if (!response.IsSuccessStatusCode)
@@ -43,6 +53,22 @@ public class WebApiService : IWebApiService
         ProfilesDto profiles = JsonConvert.DeserializeObject<ProfilesDto>(json);
 
         return profiles;
+    }
+
+    public async Task<string> GetUserIdFromJwt()
+    {
+        string jwtToken = await localStorageService.GetItemAsStringAsync("jwt");
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.ReadJwtToken(jwtToken);
+
+        var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+        if (userIdClaim != null)
+        {
+            return userIdClaim.Value.ToString();
+        }
+
+        return null;
     }
 
     public async Task Login(UserLoginDto loginDto)

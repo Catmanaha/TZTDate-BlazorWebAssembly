@@ -1,65 +1,8 @@
 @page "/User/Account"
-@inject IJSRuntime JSRuntime
-@using System.IdentityModel.Tokens.Jwt
-@using System.Security.Claims
-@using System.Linq
-@using Newtonsoft.Json;
-@using TZTDate_BlazorWebAssembly.Dtos
-@using TZTDate_BlazorWebAssembly.Models
+@inherits AccountBase
 
 <PageTitle>Account</PageTitle>
 
 <h1 style="margin-top: 86px;">@myId</h1>
 
 <p style="margin-top: 86px;">text: @text</p>
-
-@code {
-    [Inject]
-    private HttpClient httpClient { get; set; }
-    private string? myId = string.Empty;
-    private string? text = string.Empty;
-    protected override async Task OnInitializedAsync()  
-    {
-        myId = await GetUserIdFromJwt();
-
-        string json = await GetAccountDataAsync(myId);
-
-        AccountDto accountDto = JsonConvert.DeserializeObject<AccountDto>(json);
-    }
-
-    public async Task<string> GetUserIdFromJwt()
-    {
-        string jwtToken = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "jwt");
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.ReadJwtToken(jwtToken);
-
-        var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-        if (userIdClaim != null)
-        {
-            return userIdClaim.Value.ToString();
-        }
-
-        return null;
-    }
-    public async Task<string> GetAccountDataAsync(string id)
-    {
-        try
-        {
-            var response = await httpClient.GetAsync($"http://localhost:5000/api/User/Account?id={id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                return (await response.Content.ReadAsStringAsync());
-            }
-            else
-            {
-                return "Error: " + response.StatusCode;
-            }
-        }
-        catch (Exception ex)
-        {
-            return "Exception: " + ex.Message;
-        }
-    }
-}
