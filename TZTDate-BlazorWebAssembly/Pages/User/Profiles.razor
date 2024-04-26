@@ -44,17 +44,25 @@ else {
 }
 
 <div class="profiles-container">
-    @foreach (var profile in profiles.users)
+    @if (profiles != null && profiles.users != null)
     {
-        <a href="/User/Details?id=@profile.Id">
-            @* <img src="@profile.ProfilePicPaths[0]"> *@
-            <img
-                src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
-            <div>
-                <p>@profile.Username, @profile.Age</p>
-                <span>@profile.Description</span>
-            </div>
-        </a>
+        @foreach (var profile in profiles.users)
+        {
+            <a href="/User/Details?id=@profile.Id">
+                @if (profile.ProfilePicPaths != null && profile.ProfilePicPaths.Length > 0)
+                {
+                    <img src="@profile.ProfilePicPaths[0]">
+                }
+                else
+                {
+                    <img src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
+                }
+                <div>
+                    <p>@profile.Username, @profile.Age</p>
+                    <span>@profile.Description</span>
+                </div>
+            </a>
+        }
     }
 </div>
 
