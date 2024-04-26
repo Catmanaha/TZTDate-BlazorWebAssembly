@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using TZTDate_BlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Dtos;
+using TZTDateBlazorWebAssembly.Models;
 using TZTDateBlazorWebAssembly.Responses;
 using TZTDateBlazorWebAssembly.Services.Base;
 
@@ -36,6 +37,18 @@ public class WebApiService : IWebApiService
         return await httpClient.GetStringAsync($"User/Account?id={userId}");
     }
 
+    public async Task<DateUserAndRecomendations>? GetRecomendationsAsync()
+    {
+        string id = await GetUserIdFromJwt();
+
+        var response = await httpClient.GetAsync($"http://localhost:5000/api/HomeConroller/Index?id={id}");
+
+        string json = await response.Content.ReadAsStringAsync();   
+
+        DateUserAndRecomendations recomendations = JsonConvert.DeserializeObject<DateUserAndRecomendations>(json);
+
+        return recomendations;
+    }
     public async Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, string searchGender)
     {
 
