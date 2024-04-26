@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
-
 @inject AuthenticationStateProvider authenticationStateProvider
 @inject ILocalStorageService localStorageService
+@inject NavigationManager navigationManager
 
 <header>
     <a href="/Home/Main" class="logo">TZT<span>Date</span></a>
@@ -9,6 +9,11 @@
     <nav class="navbar">
         <AuthorizeView>
             <Authorized>
+                @* @if (IsProfilePage())
+                {
+                    <button @onclick=OpenSearchDiv class="search1"><span
+                            class="material-symbols-outlined">search</span></button>
+                } *@
                 <a href="/Home/Index">Home</a>
                 <a href="/User/Profiles">Profiles</a>
                 <a href="/Forum/Index">Forum</a>
@@ -33,5 +38,10 @@
 
         await authenticationStateProvider.GetAuthenticationStateAsync();
     }
-}
+    private bool IsProfilePage()
+    {
+        var currentUrl = navigationManager.Uri;
 
+        return currentUrl.Contains("/User/Profiles", StringComparison.OrdinalIgnoreCase);
+    }
+}

@@ -1,25 +1,75 @@
 @page "/User/Profiles"
 @inherits ProfilesBase
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Profiles</PageTitle>
 
-<div class="search-bar">
-    <input type="text" @bind-value=SearchingByName placeholder="search by name">
-    <input type="text" @bind-value=SearchingStartAge placeholder="search by start age">
-    <input type="text" @bind-value=SearchingEndAge placeholder="search by end age">
-    <input type="text" @bind-value=SearchingInterests placeholder="search by interests">
-    <input type="text" @bind-value=SearchingGender placeholder="search by gender">
+<button @onclick=HideDiv class="search1"><span class="material-symbols-outlined">search</span></button>
 
-    <button @onclick=FilterSearch>Search</button>
+<div class="profiles-search-div">
+    <input class="form-control" type="text" @bind-value=SearchingByName placeholder="search by name">
+    <div class="ages">
+        <label>Searching for ages between</label>
+        <input class="form-control" type="text" @bind-value=SearchingStartAge placeholder="search by start age">
+        <span>ᅠ—ᅠ</span>
+        <input class="form-control" type="text" @bind-value=SearchingEndAge placeholder="search by end age">
+    </div>
+
+    <div class="gender">
+        <label>Searching gender</label>
+        <input class="form-control" type="text" @bind-value=SearchingGender placeholder="search by gender">
+        <button @onclick=SwitchGender class="form-control"><span
+                class="material-symbols-outlined">expand_more</span></button>
+    </div>
+
+    <input class="form-control" type="text" @bind-value=SearchingInterests placeholder="search by interests">
+
+    <button class="show-matches" @onclick=FilterSearch>show matches</button>
 </div>
 
-<div>
-    @foreach (var profile in profiles.users)
+@if (isHide)
+{
+    <style>
+        .profiles-search-div {
+            display: none;
+        }
+    </style>
+}
+else {
+    <style>
+        .profiles-search-div {
+            display: flex;
+        }
+    </style>
+}
+
+<div class="profiles-container">
+    @if (profiles != null && profiles.users != null)
     {
-        <a href="/User/Details?id=@profile.Id">
-            <div style="margin-top: 10px; background-color: blue;">
-                <p style="color: #000;">@profile.Username</p>
-            </div>
-        </a>
+        @foreach (var profile in profiles.users)
+        {
+            <a href="/User/Details?id=@profile.Id">
+                @if (profile.ProfilePicPaths != null && profile.ProfilePicPaths.Length > 0)
+                {
+                    <img src="@profile.ProfilePicPaths[0]">
+                }
+                else
+                {
+                    <img src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
+                }
+                <div>
+                    <p>@profile.Username, @profile.Age</p>
+                    <span>@profile.Description</span>
+                </div>
+            </a>
+        }
     }
 </div>
+
+@code {
+    public bool isHide = true;
+    public void HideDiv()
+    {
+        this.isHide = !this.isHide;
+    }
+}
