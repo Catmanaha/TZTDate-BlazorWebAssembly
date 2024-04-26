@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using TZTDate_BlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Services.Base;
 
@@ -40,5 +41,10 @@ public class ProfilesBase : ComponentBase
     public async Task FilterSearch()
     {
         profiles = await GetProfiles();
+    }
+
+    public void SwitchGender()
+    {
+        SearchingGender = SearchingGender == "Female" ? "Male" : "Female";
     }
 }
