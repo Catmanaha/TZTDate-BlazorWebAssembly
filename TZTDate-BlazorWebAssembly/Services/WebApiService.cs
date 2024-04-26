@@ -41,7 +41,7 @@ public class WebApiService : IWebApiService
     {
         string id = await GetUserIdFromJwt();
 
-        var response = await httpClient.GetAsync($"http://localhost:5000/api/HomeConroller/Index?id={id}");
+        var response = await httpClient.GetAsync($"HomeConroller/Index?id={id}");
 
         string json = await response.Content.ReadAsStringAsync();   
 
