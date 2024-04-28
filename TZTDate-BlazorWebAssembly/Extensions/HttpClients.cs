@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TZTDateBlazorWebAssembly.Services;
 using TZTDateBlazorWebAssembly.Services.Base;
 
@@ -5,7 +6,7 @@ namespace TZTDateBlazorWebAssembly.Extensions;
 
 public static class HttpClients
 {
-    public static void InjectHttpClients(this IServiceCollection services, IConfiguration configuration)
+    public static void InjectHttpClients(this IServiceCollection services, IConfiguration configuration, IWebAssemblyHostEnvironment HostEnvironment)
     {
         services.AddHttpClient<ICountryApiService, CountryApiService>(o =>
         {
@@ -22,6 +23,10 @@ public static class HttpClients
         {
             o.BaseAddress = new Uri(configuration["CorsApi:Url"]);
             o.DefaultRequestHeaders.Add("origin", configuration["CorsApi:Origin"]);
+        });
+        services.AddHttpClient("ZodiacSign", o =>
+        {
+            o.BaseAddress = new Uri(HostEnvironment.BaseAddress);
         });
     }
 }

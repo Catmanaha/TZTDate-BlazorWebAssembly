@@ -32,7 +32,7 @@ public class User
     public int SearchingAgeEnd { get; set; }
     public string? Interests { get; set; }
 
-    public List<UserFollow>? Followers { get; set; }
-    public List<UserFollow>? Followed { get; set; }
+    public List<User>? Followers { get; set; }
+    public List<User>? Followed { get; set; }
     public ICollection<UserRole> UserRoles { get; set; }
 }

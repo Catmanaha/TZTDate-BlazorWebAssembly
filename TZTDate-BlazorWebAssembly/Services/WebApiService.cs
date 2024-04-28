@@ -31,6 +31,17 @@ public class WebApiService : IWebApiService
         this.httpClient = httpClient;
     }
 
+    public async Task SetMembership(int currentUserId, int viewedUserId)
+    {
+        await this.httpClient.PostAsync($"User/MembershipAction?currentUserId={currentUserId}&userToActionId={viewedUserId}", null);
+    }
+
+    public async Task<UserDetailsDto> GetDetails(int currentUserId, int viewedUserId)
+    {
+        var userDetailsDto = await this.httpClient.GetFromJsonAsync<UserDetailsDto>($"User/Details?currentUserId={currentUserId}&viewedUserId={viewedUserId}");
+        return userDetailsDto ?? new UserDetailsDto();
+    }
+
     public async Task<string> GetAccountData(int userId)
     {
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await localStorageService.GetItemAsStringAsync("jwt"));
