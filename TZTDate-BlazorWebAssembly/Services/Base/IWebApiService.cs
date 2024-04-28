@@ -6,6 +6,8 @@ namespace TZTDateBlazorWebAssembly.Services.Base;
 
 public interface IWebApiService
 {
+    public Task SetMembership(int currentUserId, int viewedUserId);
+    public Task<UserDetailsDto> GetDetails(int currentUserId, int viewedUserId);
     public Task Register(UserRegisterDto userRegisterDto);
     public Task<string> Login(UserLoginDto loginDto);
     public Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, string searchGender);

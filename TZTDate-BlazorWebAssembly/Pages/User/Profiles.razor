@@ -48,7 +48,7 @@ else {
     {
         @foreach (var profile in profiles.users)
         {
-            <a href="/User/Details?id=@profile.Id">
+            <a href="/User/Details/@profile.Id">
                 @if (profile.ProfilePicPaths != null && profile.ProfilePicPaths.Length > 0)
                 {
                     <img src="@profile.ProfilePicPaths[0]">
