@@ -98,39 +98,8 @@
     z-index: 1111 !important;
 }
 
-.inputBx input {
-    margin-top: 10px;
-    width: 330px;
-    height: 50px;
-    padding: 10px 12px 12px 20px;
-    font-size: 17px;
-    border-radius: 30px;
-    border: 1.5px solid lightgrey;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-    box-shadow: 0px 0px 20px -18px;
-}
-
 .form-control {
     z-index: 100;
-}
-
-.inputBx input::placeholder {
-    font-size: 17px;
-    margin-top: -10px;
-}
-
-.inputBx input:hover {
-    border: 2px solid lightgrey;
-    box-shadow: 0px 0px 20px -17px;
-}
-
-.inputBx input:active {
-    transform: scale(0.95);
-}
-
-.inputBx input:focus {
-    border: 2px solid grey;
 }
 
 .login .links {
