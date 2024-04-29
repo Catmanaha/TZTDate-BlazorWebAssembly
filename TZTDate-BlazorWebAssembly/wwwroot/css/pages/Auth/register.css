@@ -2,10 +2,17 @@
     margin-top: 5rem;
 }
 .register-div {
-    background-color: #ffebf9ba;
-    padding-top: 30px;
-    padding-bottom: 100px;
-    padding: 30px 150px 100px 150px;
+    background-color: #ffffffba;
+    margin: 86px 80px 100px 80px;
+    padding: 10px 70px 10px 70px;
+}
+.btn-navigate-form-step:hover {
+    background-color: #1a528e;
+    transition: 0.1s ease-in;
+}
+#save:hover {
+    background-color: #0b6969;
+    transition: 0.1s ease-in;
 }
 .text-center {
     text-align: center;
@@ -156,14 +163,18 @@ ul.form-stepper li a .form-stepper-circle {
 }
 
 .imageGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
 .imageWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
     text-align: center;
 }
 .imageWrapper img {
@@ -210,4 +221,25 @@ input[type="file"] {
     appearance: none;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.interests-div {
+    margin-top: 0px;
+    margin-left: 50px;
+    margin: 15px 30px 10px 30px;
+}
+
+.interests-div input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.interests-div label {
+    margin-left: 25px;
+    margin-top: 15px;
+} 
+
+.add-interest:hover {
+    color: #000 !important;
 }

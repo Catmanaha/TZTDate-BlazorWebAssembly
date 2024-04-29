@@ -14,10 +14,18 @@ public class LoginBase : ComponentBase
     private IWebApiService webApiService { get; set; }
 
     public UserLoginDto loginDto { get; set; } = new();
+    public string? ErrorText { get; set; }
 
     public async Task OnLoginFormSubmitAsync(EditContext editContext)
     {
-        await webApiService.Login(loginDto);
-        navigationManager.NavigateTo("/");
+        var text = await webApiService.Login(loginDto);
+
+        if (text == null)
+        {
+            navigationManager.NavigateTo("/");
+            return;
+        }
+
+        ErrorText = text;
     }
 }

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="\css\Register.css">
 
 <div class="register-div">
-    <h1 style="text-align: center;">Register</h1>
+    <h1 style="text-align: center; margin-right: 50px;">Register</h1>
 
     <div id="multi-step-form-container">
         <ul class="form-stepper form-stepper-horizontal text-center mx-auto pl-0">
@@ -122,41 +122,54 @@
                 <section id="step-3" class="form-step">
                     <h2 class="font-normal">Preferences</h2>
                     <div class="mt-3">
-                        <div class="form-group" style="display: flex; flex-direction: column;">
-                            <label for="searchingGender">Searching Gender</label>
-                            <InputSelect id="searchingGender" @bind-Value="UserRegisterDto.SearchingGender">
-                                @foreach (var value in Enum.GetValues(typeof(Gender)))
+                        <div style="display: flex; flex-direction: row; width: 100%;">
+                            <div style="display: flex; flex-direction: column; width: 50%;">
+                                <div class="form-group" style="display: flex; flex-direction: column;">
+                                    <label for="searchingGender">Searching Gender</label>
+                                    <InputSelect id="searchingGender" @bind-Value="UserRegisterDto.SearchingGender">
+                                        @foreach (var value in Enum.GetValues(typeof(Gender)))
+                                        {
+                                            <option value="@value">@value</option>
+                                        }
+                                    </InputSelect>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="searchingAgeStart">Searching Age Start</label>
+                                    <InputNumber id="searchingAgeStart" @bind-Value="UserRegisterDto.SearchingAgeStart"
+                                        class="form-control" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="searchingAgeEnd">Searching Age End</label>
+                                    <InputNumber id="searchingAgeEnd" @bind-Value="UserRegisterDto.SearchingAgeEnd"
+                                        class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="interests-div">
+                                <label style="font-weight: 500;">Interests</label>
+                                <br>
+                                @foreach (var interest in InterestsList)
                                 {
-                                    <option value="@value">@value</option>
+                                    <label>
+                                        @interest.Label
+                                        <input type="checkbox"
+                                            @onchange="((ChangeEventArgs e) => UpdateInterests(interest.Label, (bool)e.Value))" />
+                                    </label>
                                 }
-                            </InputSelect>
+                                @* <div style="display: flex; flex-direction: row;">
+                                    <input class="form-control"
+                                        style="margin-left: 27px; margin-top: 20px; padding: 5px 10px;"
+                                        placeholder="Add your own interest" />
+                                    <button style="margin-top: 20px; height: 35px; width: 50px;" class="add-interest form-control"><span class="material-symbols-outlined" style="margin-top: 0px">add</span></button>
+                                </div> *@
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="searchingAgeStart">Searching Age Start</label>
-                            <InputNumber id="searchingAgeStart" @bind-Value="UserRegisterDto.SearchingAgeStart"
-                                class="form-control" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="searchingAgeEnd">Searching Age End</label>
-                            <InputNumber id="searchingAgeEnd" @bind-Value="UserRegisterDto.SearchingAgeEnd"
-                                class="form-control" />
-                        </div>
                         <p id="errorMessage" class="text-danger"></p>
-                        <div>
-                            <label style="font-weight: 500;">Interests</label>
-                            <br>
-                            @foreach (var interest in InterestsList)
-                            {
-                                <label>
-                                    <input type="checkbox"
-                                        @onchange="((ChangeEventArgs e) => UpdateInterests(interest.Label, (bool)e.Value))" />
-                                    @interest.Label
-                                </label>
-                            }
-                        </div>
                     </div>
+
                     <div class="mt-3">
                         <button @onclick="() => NavigateToFormStep(2)" class="button btn-navigate-form-step" type="button"
                             step_number="2">Prev</button>

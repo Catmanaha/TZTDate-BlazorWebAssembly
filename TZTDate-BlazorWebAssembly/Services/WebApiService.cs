@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using TZTDate_BlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Dtos;
+using TZTDateBlazorWebAssembly.Enums;
 using TZTDateBlazorWebAssembly.Models;
 using TZTDateBlazorWebAssembly.Responses;
 using TZTDateBlazorWebAssembly.Services.Base;
@@ -50,29 +51,43 @@ public class WebApiService : IWebApiService
 
     public async Task<string> GetAccountData(int userId)
     {
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await localStorageService.GetItemAsStringAsync("jwt"));
         return await httpClient.GetStringAsync($"User/Account?id={userId}");
+    }
+
+    public async Task<string> UpdateUsernameAsync(string newUsername, string newDescription) 
+    {
+        string id = await GetUserIdFromJwt();
+
+        string url = $"User/ChangeUsername";
+
+        UpdateUsernameDto updateUsernameDto = new UpdateUsernameDto() {
+            Id = id,
+            NewUsername = newUsername,
+            NewDescription = newDescription
+        };
+
+        var responce = await httpClient.PutAsJsonAsync(url, updateUsernameDto);
+
+        if (responce.IsSuccessStatusCode)
+            return null;
+        
+        return await responce.Content.ReadAsStringAsync();
     }
 
     public async Task<DateUserAndRecomendations>? GetRecomendationsAsync()
     {
         string id = await GetUserIdFromJwt();
 
-        var response = await httpClient.GetAsync($"HomeConroller/Index?id={id}");
+        var response = await httpClient.GetFromJsonAsync<DateUserAndRecomendations>($"Home/Index?userId={id}");
 
-        string json = await response.Content.ReadAsStringAsync();   
-
-        DateUserAndRecomendations recomendations = JsonConvert.DeserializeObject<DateUserAndRecomendations>(json);
-
-        return recomendations;
+        return response;
     }
-    public async Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, string searchGender)
+    public async Task<ProfilesDto> GetProfiles(string userId, string searchByName, int? startAge, int? endAge, string interests, Gender searchGender)
     {
 
         var url =
         $"User/Profiles?userId={userId}&searchByName={searchByName}&startAge={startAge}&endAge={endAge}&interests={interests}&searchGender={searchGender}";
 
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await localStorageService.GetItemAsStringAsync("jwt"));
         var response = await httpClient.GetAsync(url);
 
         if (!response.IsSuccessStatusCode)
@@ -101,7 +116,7 @@ public class WebApiService : IWebApiService
         return null;
     }
 
-    public async Task Login(UserLoginDto loginDto)
+    public async Task<string> Login(UserLoginDto loginDto)
     {
 
         loginDto.IpAddress = await ipifyApiService.GetCurrentIpAddress();
@@ -116,11 +131,13 @@ public class WebApiService : IWebApiService
             await localStorageService.SetItemAsStringAsync("refreshToken", response.RefreshToken.ToString());
 
             await authenticationStateProvider.GetAuthenticationStateAsync();
+
+            return null;
         }
         else
         {
             var error = await loginResponse.Content.ReadAsStringAsync();
-            Console.WriteLine(error);
+            return error;
         }
     }
 

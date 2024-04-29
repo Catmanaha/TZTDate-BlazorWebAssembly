@@ -3,21 +3,36 @@
 
 <PageTitle>Login</PageTitle>
 
-<h1>Login</h1>
+<img class="login-img"
+    src="https://media.istockphoto.com/id/1160835219/photo/wedding-rings-on-the-white-sand-in-the-background-the-newlyweds-and-the-ocean.jpg?s=612x612&w=0&k=20&c=PAwOeB3Kqu2mXPZJh5b7B_NmFsoJ57KZNh4qEIv8wGE=">
 
-<EditForm Model="loginDto" OnValidSubmit="OnLoginFormSubmitAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<EditForm Model="loginDto" OnValidSubmit="OnLoginFormSubmitAsync" style="padding-top: 86px;">
+    <div class="login-div">
+        <div class="ring">
+            <i style="--clr:#00ff0a;"></i>
+            <i style="--clr:#ff0057;"></i>
+            <i style="--clr:#fffd44;"></i>
+            <div class="login">
+                <h2 style="margin-bottom: 15px;">Login</h2>
+                <p style="color: red;">@ErrorText</p>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="inputBx">
+                    <InputText name="email" @bind-Value=loginDto.Email></InputText>
+                </div>
+                <div class="inputBx">
+                    <InputText name="password" type="password" @bind-Value=loginDto.Password>
+                    </InputText>
+                </div>
+                <div class="inputBx">
+                    <button class="btn btn-success">Login</button>
+                </div>
+                <div class="inputBx">
+                    <span>Have not account? <a href="/User/Register">Register</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <label class="form-label d-block">
-        Email:
-        <InputText name="email" class="form-control" @bind-Value=loginDto.Email></InputText>
-    </label>
 
-    <label class="form-label d-block">
-        Password:
-        <InputText name="password" class="form-control" type="password" @bind-Value=loginDto.Password></InputText>
-    </label>
-
-    <button class="btn btn-success">Login</button>
 </EditForm>

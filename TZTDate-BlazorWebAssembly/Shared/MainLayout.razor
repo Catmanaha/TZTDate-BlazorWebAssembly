@@ -4,21 +4,16 @@
 @inject NavigationManager navigationManager
 
 <header>
-    <a href="/Home/Main" class="logo">TZT<span>Date</span></a>
+    <a href="/" class="logo">TZT<span>Date</span></a>
 
     <nav class="navbar">
         <AuthorizeView>
             <Authorized>
-                @* @if (IsProfilePage())
-                {
-                    <button @onclick=OpenSearchDiv class="search1"><span
-                            class="material-symbols-outlined">search</span></button>
-                } *@
                 <a href="/Home/Index">Home</a>
                 <a href="/User/Profiles">Profiles</a>
                 <a href="/Forum/Index">Forum</a>
                 <a href="/User/Account">Account</a>
-                <a href="/Home/Main" @onclick="LogoutAsync"><span class="material-symbols-outlined">logout</span></a>
+                <a href="/" @onclick="LogoutAsync"><span class="material-symbols-outlined">logout</span></a>
             </Authorized>
             <NotAuthorized>
                 <a href="/Auth/Login" class="login">Login</a>
