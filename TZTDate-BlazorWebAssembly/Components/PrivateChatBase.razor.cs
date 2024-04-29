@@ -19,7 +19,6 @@ public class PrivateChatBase : ComponentBase
     public string CurrentUserName { get; set; }
     public List<Message> Messages { get; set; }
     public CompanionsDto ChatDto { get; set; }
-    public string ConnectionId { get; set; }
     public string newMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -41,7 +40,6 @@ public class PrivateChatBase : ComponentBase
         CurrentPrivateChat = ChatDto.PrivateChat;
         CurrentUserName = ChatDto?.CurrentUser?.Username ?? throw new ArgumentNullException();
         Messages = CurrentPrivateChat.Messages ?? new List<Message>();
-        ConnectionId = await GetConnectionIdAsync();
         await hubConnection.InvokeAsync("JoinGroup", CurrentPrivateChat.PrivateChatHashName);
     }
 
