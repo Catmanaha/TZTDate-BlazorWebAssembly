@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 using TZTDate_BlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Dtos;
@@ -46,6 +47,26 @@ public class WebApiService : IWebApiService
     {
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await localStorageService.GetItemAsStringAsync("jwt"));
         return await httpClient.GetStringAsync($"User/Account?id={userId}");
+    }
+
+    public async Task<string> UpdateUsernameAsync(string newUsername, string newDescription) 
+    {
+        string id = await GetUserIdFromJwt();
+
+        string url = $"http://localhost:5000/api/User/ChangeUsername";
+
+        UpdateUsernameDto updateUsernameDto = new UpdateUsernameDto() {
+            Id = id,
+            NewUsername = newUsername,
+            NewDescription = newDescription
+        };
+
+        var responce = await httpClient.PutAsJsonAsync(url, updateUsernameDto);
+
+        if (responce.IsSuccessStatusCode)
+            return null;
+        
+        return (await responce.Content.ReadAsStringAsync());
     }
 
     public async Task<DateUserAndRecomendations>? GetRecomendationsAsync()
@@ -95,7 +116,7 @@ public class WebApiService : IWebApiService
         return null;
     }
 
-    public async Task Login(UserLoginDto loginDto)
+    public async Task<string> Login(UserLoginDto loginDto)
     {
 
         loginDto.IpAddress = await ipifyApiService.GetCurrentIpAddress();
@@ -110,11 +131,13 @@ public class WebApiService : IWebApiService
             await localStorageService.SetItemAsStringAsync("refreshToken", response.RefreshToken.ToString());
 
             await authenticationStateProvider.GetAuthenticationStateAsync();
+
+            return null;
         }
         else
         {
             var error = await loginResponse.Content.ReadAsStringAsync();
-            Console.WriteLine(error);
+            return error;
         }
     }
 

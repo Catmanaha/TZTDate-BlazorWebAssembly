@@ -16,6 +16,7 @@ header {
     align-items: center;
     z-index: 100;
     transition: .3s;
+    box-shadow: 0px 0px 10px #dfdfdf;
 }
 
 header span {

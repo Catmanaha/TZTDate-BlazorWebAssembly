@@ -18,11 +18,7 @@ public partial class RegisterBase : ComponentBase
     private string SelectedCountryCode { get; set; }
     public List<string> interests = new List<string>
         {
-            "Sport", "Games", "Traveling", "Reading", "Cooking", "Hiking", "Photography", "Music",
-            "Painting", "Writing",
-            "Gardening", "Yoga", "Meditation", "Astronomy", "Dancing", "Film-making", "Bird-watching",
-            "Knitting", "Surfing",
-            "Scuba diving", "Chess", "Calligraphy"
+            "Sport", "Games", "Traveling", "Reading", "Cooking", "Hiking", "Photography", "Music", "Painting", "Writing", "Gardening", "Yoga", "Meditation", "Astronomy", "Dancing", "Film-making", "Bird-watching", "Knitting", "Surfing", "Scuba diving", "Chess", "Calligraphy", "Watching TV", "Nature", "Shopping", "Fashion", "Dancing", "Diving", "Smoking", "Capming", "Cars", "Sailing", "Party & Night Clubs", "Movies", "Museums", "Art", "Eating", "Swimming", "Youtube Watching", "Chatting"
         };
     public List<CheckboxListItem> InterestsList { get; set; }
     private StringBuilder InterestsStringBuilder { get; set; } = new(100);
