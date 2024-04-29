@@ -6,6 +6,7 @@ namespace TZTDateBlazorWebAssembly.Services.Base;
 
 public interface IWebApiService
 {
+    public Task<CompanionsDto> GoToChat(int currentUserId, int companionId);
     public Task SetMembership(int currentUserId, int viewedUserId);
     public Task<UserDetailsDto> GetDetails(int currentUserId, int viewedUserId);
     public Task Register(UserRegisterDto userRegisterDto);

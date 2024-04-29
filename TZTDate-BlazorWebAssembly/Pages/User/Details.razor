@@ -56,12 +56,10 @@
         <button @onclick="LikeButtonClick" class="like-button @(LikeButtonState ? "liked" : "")">
             @(LikeButtonState ? "Unlike" : "Like")
         </button>
-        @* <form id="" asp-controller="" asp-action="" method="">
-            <input type="hidden" name="" value="" />
-            <button @onclick="ChatButtonClick" class="chat-button" @(ReplicateMembership ? "" : "hidden")>
-                Chat
-            </button>
-        </form> *@
+        @* @(ReplicateMembership ? "" : "hidden") *@
+        <button @onclick="ChatButtonClick" class="chat-button" >
+            Chat
+        </button>
     </div>
 </div>
 

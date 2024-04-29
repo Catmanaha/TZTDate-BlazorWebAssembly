@@ -27,6 +27,8 @@ public class DetailsBase : ComponentBase
     private IWebApiService webApiService { get; set; }
     [Inject]
     private ILocalStorageService localStorageService { get; set; }
+    [Inject]
+    private NavigationManager Navigation { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -67,6 +69,7 @@ public class DetailsBase : ComponentBase
 
     protected async Task ChatButtonClick()
     {
-        // await webApiService.SetMembership(CurrentUser.Id, ViewedUser.Id);
+        var url = $"/PrivateChat?CompanionId={ViewedUser.Id}&CurrentUserId={CurrentUser.Id}";
+        Navigation.NavigateTo(url);
     }
 }
