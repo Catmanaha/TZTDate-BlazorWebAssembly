@@ -7,24 +7,26 @@
 <button @onclick=HideDiv class="search1"><span class="material-symbols-outlined">search</span></button>
 
 <div class="profiles-search-div">
-    <input class="form-control" type="text" @bind-value=SearchingByName placeholder="search by name">
+    <button class="exit" @onclick=HideDiv><span class="material-symbols-outlined">close</span></button>
+
+    <input style="width: 100%; margin-top: 8px;" type="text" @bind-value=SearchingByName placeholder="search by name">
     <div class="ages">
         <label>Searching for ages between</label>
-        <input class="form-control" type="text" @bind-value=SearchingStartAge placeholder="search by start age">
+        <input type="text" @bind-value=SearchingStartAge placeholder="search by start age">
         <span>ᅠ—ᅠ</span>
-        <input class="form-control" type="text" @bind-value=SearchingEndAge placeholder="search by end age">
+        <input type="text" @bind-value=SearchingEndAge placeholder="search by end age">
     </div>
 
     <div class="gender">
         <label>Searching gender</label>
-        <input class="form-control" type="text" @bind-value=SearchingGenderString placeholder="search by gender">
+        <input type="text" @bind-value=SearchingGenderString placeholder="search by gender">
         <button @onclick=SwitchGender class="form-control"><span
                 class="material-symbols-outlined">expand_more</span></button>
     </div>
 
-    <input class="form-control" type="text" @bind-value=SearchingInterests placeholder="search by interests">
+    <input style="width: 100%;" type="text" @bind-value=SearchingInterests placeholder="search by interests">
 
-    <button class="show-matches" @onclick=FilterSearch>show matches</button>
+    <button class="show-matches" @onclick=SearchProfilesAsync>show matches</button>
 </div>
 
 @if (isHide)
@@ -44,9 +46,9 @@ else
     </style>
 }
 
-<div class="profiles-container">
-    @if (profiles != null && profiles.users != null)
-    {
+@if (profiles != null && profiles.users.Any())
+{
+    <div class="profiles-container">
         @foreach (var profile in profiles.users)
         {
             <a href="/User/Details/@profile.Id">
@@ -65,13 +67,26 @@ else
                 </div>
             </a>
         }
-    }
-</div>
+    </div>
+}
+else
+{
+    <div class="no-profiles-div">
+        <h2><span class="material-symbols-outlined">mood_bad</span> There is no profiles recomendations for you</h2>
+    </div>
+}
+
 
 @code {
     public bool isHide = true;
     public void HideDiv()
     {
         this.isHide = !this.isHide;
+    }
+
+    public async Task SearchProfilesAsync()
+    {
+        await FilterSearch();
+        HideDiv();
     }
 }

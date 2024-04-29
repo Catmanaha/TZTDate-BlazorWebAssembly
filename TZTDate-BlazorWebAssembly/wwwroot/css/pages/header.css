@@ -139,3 +139,17 @@ header .register:hover::before {
 header a {
     text-decoration: none;
 }
+
+header .logout {
+    color: #000;
+    margin-top: 11px;
+}
+
+header .logout span {
+    color: #000;
+}
+
+
+header .logout span:hover {
+    color: #ff4dc9;
+}
