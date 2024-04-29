@@ -11,11 +11,8 @@ namespace TZTDateBlazorWebAssembly.Components;
 public class PrivateChatBase : ComponentBase
 {
     private HubConnection hubConnection;
-    private readonly List<string> messages = new();
     [Inject]
     private IWebApiService webApiService { get; set; }
-    
-    public IJSRuntime JSRuntime { get; set; }
     [Parameter] public int CompanionId { get; set; }
     [Parameter] public int CurrentUserId { get; set; }
     public PrivateChat CurrentPrivateChat { get; set; }
@@ -30,6 +27,15 @@ public class PrivateChatBase : ComponentBase
         hubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5000/chat")
             .Build();
+
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+    {
+    var newMessage = new Message { Owner = user, Content = message, PrivateChatId = CurrentPrivateChat.Id };
+    Messages.Add(newMessage);
+
+    InvokeAsync(StateHasChanged);
+    });
+
         await hubConnection.StartAsync();
         ChatDto = await GetChatData();
         CurrentPrivateChat = ChatDto.PrivateChat;
@@ -41,7 +47,7 @@ public class PrivateChatBase : ComponentBase
 
     public async ValueTask DisposeAsync()
     {
-        if(hubConnection is not null)
+        if (hubConnection is not null)
         {
             await hubConnection.DisposeAsync();
         }
@@ -50,14 +56,6 @@ public class PrivateChatBase : ComponentBase
     private async Task<CompanionsDto> GetChatData()
     {
         return await webApiService.GoToChat(this.CurrentUserId, this.CompanionId);
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("interop.setupSignalR");
-        }
     }
 
     protected async Task SendMessage()
@@ -70,6 +68,6 @@ public class PrivateChatBase : ComponentBase
 
     async Task SendMessageToServer(string message)
     {
-        await hubConnection.InvokeAsync("SendMessageToGroup",  CurrentUserName,  CurrentPrivateChat.PrivateChatHashName,  message);
+        await hubConnection.InvokeAsync("SendMessageToGroup", CurrentUserName, CurrentPrivateChat.PrivateChatHashName, message);
     }
 }

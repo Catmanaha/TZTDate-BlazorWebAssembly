@@ -34,7 +34,7 @@ public class WebApiService : IWebApiService
 
     public async Task<CompanionsDto> GoToChat(int currentUserId, int companionId)
     {
-        var response = await this.httpClient.PostAsJsonAsync<CompanionsDto>($"User/MembershipAction?companionId={companionId}&currentUserId={currentUserId}", null);
+        var response = await this.httpClient.PostAsJsonAsync<CompanionsDto>($"Chat/PrivateChat?companionId={companionId}&currentUserId={currentUserId}", null);
         return await response.Content.ReadFromJsonAsync<CompanionsDto>() ?? new CompanionsDto();
     }
 

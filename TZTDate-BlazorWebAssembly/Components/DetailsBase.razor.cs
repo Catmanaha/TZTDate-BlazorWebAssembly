@@ -69,7 +69,7 @@ public class DetailsBase : ComponentBase
 
     protected async Task ChatButtonClick()
     {
-        var url = $"/PrivateChat?CompanionId={ViewedUser.Id}&CurrentUserId={CurrentUser.Id}";
+        var url = $"/PrivateChat/{ViewedUser.Id}/{CurrentUser.Id}";
         Navigation.NavigateTo(url);
     }
 }
