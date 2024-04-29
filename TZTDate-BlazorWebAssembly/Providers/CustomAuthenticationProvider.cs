@@ -71,7 +71,7 @@ public class CustomAuthenticationProvider : AuthenticationStateProvider
                 var httpClient = new HttpClient();
 
                 var updateTokenResponse = await httpClient.PutAsJsonAsync(
-                    "http://localhost:5000/api/Auth/UpdateToken",
+                    "http://api.flirtify.tech/api/Auth/UpdateToken",
 
                        new UpdateTokenRequest
                        {
