@@ -23,7 +23,7 @@
             <span class="material-symbols-outlined">person</span>
             <div class="about-div2">
                 <span>Username</span>
-                <p>@ViewedUser.Username</p>
+                <p>@ViewedUser?.Username</p>
             </div>
         </div>
 
@@ -31,8 +31,8 @@
             <span class="material-symbols-outlined">location_on</span>
             <div class="about-div2">
                 <span>City of residence</span>
-                <p>@ViewedUser.Address.Country , @ViewedUser.Address.City ,
-                    @ViewedUser.Address.State</p>
+                <p>@ViewedUser?.Address?.Country , @ViewedUser?.Address?.City ,
+                    @ViewedUser?.Address?.State</p>
             </div>
         </div>
 
@@ -48,12 +48,12 @@
             <span class="material-symbols-outlined">mail</span>
             <div class="about-div2">
                 <span>Personal mailing address</span>
-                <p>@ViewedUser.Email</p>
+                <p>@ViewedUser?.Email</p>
             </div>
         </div>
 
         <div class="about-div1">
-            @if (ViewedUser.Gender == Gender.Male)
+            @if (ViewedUser?.Gender == Gender.Male)
             {
                 <span class="material-symbols-outlined">male</span>
             }
@@ -63,7 +63,7 @@
             }
             <div class="about-div2">
                 <span>Gender</span>
-                <p>@ViewedUser.Gender</p>
+                <p>@ViewedUser?.Gender</p>
             </div>
         </div>
 
@@ -82,17 +82,17 @@
         <h2>Zodiac sign compatibility</h2>
         @if (CurrentUser != null && ViewedUser != null)
         {
-            <h3 style="margin-top: -30px !important;"><span class="zodiac-sign">@CurrentUser.GetZodiacSign()</span>
-                @ZodiacCompatibility.Type <span class="zodiac-sign">@ViewedUser.GetZodiacSign()</span></h3>
+            <h3 style="margin-top: -30px !important;"><span class="zodiac-sign">@CurrentUser?.GetZodiacSign()</span>
+                @ZodiacCompatibility?.Type <span class="zodiac-sign">@ViewedUser?.GetZodiacSign()</span></h3>
         }
         <div>@ZodiacCompatibility?.Description</div>
     </div>
     <div>
-    <button @onclick="LikeButtonClick" class="like-button @(LikeButtonState ? "liked" : "")">
-        @(LikeButtonState ? "Unlike" : "Like")
-    </button>
-        <button @onclick="ChatButtonClick" class="chat-button">
-            Chat
+        <button @onclick="LikeButtonClick" class="like-button @(LikeButtonState ? "liked" : "")">
+            @(LikeButtonState ? "Unlike" : "Like")
+        </button>
+        <button @onclick="ChatButtonClick" class="chat-button"
+            style="@(ReplicateMembership == false ? "display: none;" : "")"> Chat
         </button>
     </div>
 </div>
