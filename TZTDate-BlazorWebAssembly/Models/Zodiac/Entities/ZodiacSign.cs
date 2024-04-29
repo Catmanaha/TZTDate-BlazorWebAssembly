@@ -1,6 +1,4 @@
 ﻿using System.Net.Http.Json;
-using System.Reflection;
-using Newtonsoft.Json;
 using TZTDate_BlazorWebAssembly.Models;
 using TZTDateBlazorWebAssembly.Models.Zodiac.Enums;
 

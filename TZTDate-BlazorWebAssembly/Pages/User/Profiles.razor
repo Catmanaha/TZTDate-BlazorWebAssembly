@@ -17,7 +17,7 @@
 
     <div class="gender">
         <label>Searching gender</label>
-        <input class="form-control" type="text" @bind-value=SearchingGender placeholder="search by gender">
+        <input class="form-control" type="text" @bind-value=SearchingGenderString placeholder="search by gender">
         <button @onclick=SwitchGender class="form-control"><span
                 class="material-symbols-outlined">expand_more</span></button>
     </div>
@@ -35,7 +35,8 @@
         }
     </style>
 }
-else {
+else
+{
     <style>
         .profiles-search-div {
             display: flex;
@@ -55,7 +56,8 @@ else {
                 }
                 else
                 {
-                    <img src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
+                    <img
+                        src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
                 }
                 <div>
                     <p>@profile.Username, @profile.Age</p>

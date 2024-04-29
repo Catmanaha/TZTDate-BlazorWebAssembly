@@ -1,7 +1,5 @@
 @page "/Home/Index"
-@using Microsoft.AspNetCore.Authorization
-@using TZTDateBlazorWebAssembly.Services.Base
-@using TZTDate_BlazorWebAssembly.Models
+@inherits IndexBase
 @attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
@@ -13,63 +11,25 @@
     {
         <p>Top @RecomendationUsers?.Count() female recomendations for you!</p>
     }
-    @if (Me.SearchingGender == Gender.Male)
+    @if (Me?.SearchingGender == Gender.Male)
     {
         <p>Top @RecomendationUsers?.Count() male recomendations for you!</p>
     }
     <div>
-        @foreach (var user in @RecomendationUsers)
+        @if (RecomendationUsers != null)
         {
-            <div>
-                @{
-                    string image = user?.ProfilePicPaths[0];
-                }
-                <img src="~/Assets/@image">
-                <p>@user?.Username</p>
-                <a href="/User/Details?id=@user.Id"><span class="material-symbols-outlined">info</span></a>
-            </div>
+            @foreach (var user in RecomendationUsers)
+            {
+                <div>
+                    @{
+                        string image = user?.ProfilePicPaths[0];
+                    }
+                    <img src="@image">
+                    <p>@user?.Username</p>
+                    <p>@user?.GetZodiacSign()</p>
+                    <a href="/User/Details?id=@user.Id"><span class="material-symbols-outlined">info</span></a>
+                </div>
+            }
         }
     </div>
 </section>
-
-@code {
-    [Inject]
-    private IWebApiService webApiService { get; set; }
-    public User? Me { get; set; }
-    public IEnumerable<User>? RecomendationUsers { get; set; }
-    public async Task GetRecomendations()
-    {
-        DateUserAndRecomendations recomendations = await webApiService.GetRecomendationsAsync();
-        RecomendationUsers = recomendations.RecomendationUsers;
-        Me = recomendations.Me;
-    }
-}
-
-
-@* <section id="index1">
-    <h1>Welcome to TZT Date, <span>User</span></h1>
-    <p>Top 3 recomendations for you!</p>
-    <div>
-        <div>
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM-WZUhgmYsc7IuFCbzF2GIl4zZY4-w52z5BfBGnG5Ow&s">
-            <p>Kate</p>
-            <i>Cancer</i>
-            <a href="/User/Details?id=1"><span class="material-symbols-outlined">info</span></a>
-        </div>
-        <div>
-            <img
-                src="https://i.pinimg.com/736x/76/2c/6b/762c6b1521afe0a2ae45e341dd0ab596.jpg">
-            <p>Adriana</p>
-            <i>Capricorn</i>
-            <a href="/User/Details?id=1"><span class="material-symbols-outlined">info</span></a>
-        </div>
-        <div>
-            <img
-                src="https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1713744000&semt=ais">
-            <p>User</p>
-            <i>Taurus</i>
-            <a href="/User/Details?id=1"><span class="material-symbols-outlined">info</span></a>
-        </div>
-    </div>
-</section> *@

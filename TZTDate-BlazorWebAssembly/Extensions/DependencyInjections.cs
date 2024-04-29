@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
+using TZTDateBlazorWebAssembly.DelegateHandlers;
 using TZTDateBlazorWebAssembly.Providers;
 using TZTDateBlazorWebAssembly.Services;
 using TZTDateBlazorWebAssembly.Services.Base;
@@ -11,5 +12,6 @@ public static class DependencyInjections
     {
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationProvider>();
         services.AddScoped<IIpifyApiService, IpifyApiService>();
+        services.AddTransient<AuthorizationHandler>();
     }
 }

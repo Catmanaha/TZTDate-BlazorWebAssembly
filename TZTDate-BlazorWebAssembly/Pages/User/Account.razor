@@ -3,119 +3,125 @@
 @inject IJSRuntime JSRuntime
 
 <PageTitle>Account</PageTitle>
+@if (accountDto == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="accountDto">
+        <div class="account-div">
+            <div class="profile-header"></div>
 
-<EditForm Model="accountDto">
-    <div class="account-div">
-        <div class="profile-header"></div>
-
-        <div style="display: flex; flex-direction: row; margin-top: 230px;">
-            @if (!accountDto.ImageUris.Any())
-            {
-                <img class="profile-image"
-                    src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
-            }
-            else
-            {
-                <img class="profile-image" src="@accountDto.ImageUris.First()">
-            }
-
-            <div class="name-age">
-                <span>@accountDto.User.Username <button @onclick=ShowUpdateUsername><span
-                            class="material-symbols-outlined">edit</span></button></span>
-                <span>@accountDto.User.Age years old</span>
-                <span
-                    style="color: #000; margin-top: 20px; font-weight: lighter; font-size: 17px;">@accountDto.User.Description</span>
-
-                <div class="change-form">
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <h1>Username, Description</h1>
-                        <button @onclick=CloseUpdateUsername class="exit"><span
-                                class="material-symbols-outlined">close</span></button>
-                    </div>
-
-                    <InputText class="input" @bind-Value=accountDto.User.Username></InputText>
-                    <InputText class="input" @bind-Value=accountDto.User.Description></InputText>
-
-                    <p style="position: absolute; color: red; font-size: 17px; font-weight: lighter;">@ErrorText</p>
-                    <div>
-                        <button @onclick=CloseUpdateUsername class="cancel">Cancel</button>
-                        <button @onclick=SaveAndCloseUsername class="save">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="about">
-            <div class="about-me">
-                <h2>FACTFLILE</h2>
-
-                <div class="about-div1">
-                    <span class="material-symbols-outlined">location_on</span>
-                    <div class="about-div2">
-                        <span>City of residence</span>
-                        <p>@accountDto.User.Address.Country , @accountDto.User.Address.City ,
-                            @accountDto.User.Address.State</p>
-                    </div>
-                </div>
-
-                <div class="about-div1">
-                    <span class="material-symbols-outlined">interests</span>
-                    <div class="about-div2">
-                        <span>Interests</span>
-                        <p>@accountDto.User.Interests</p>
-                    </div>
-                </div>
-
-                <div class="about-div1">
-                    <span class="material-symbols-outlined">mail</span>
-                    <div class="about-div2">
-                        <span>Personal mailing address</span>
-                        <p>@accountDto.User.Email</p>
-                    </div>
-                </div>
-
-                <div class="about-div1">
-                    @if (accountDto.User.Gender == Gender.Male)
-                    {
-                        <span class="material-symbols-outlined">male</span>
-                    }
-                    else
-                    {
-                        <span class="material-symbols-outlined">font-sizemale</span>
-                    }
-                    <div class="about-div2">
-                        <span>Gender</span>
-                        <p>@accountDto.User.Gender</p>
-                    </div>
-                </div>
-
-                <div class="about-div1">
-                    <span class="material-symbols-outlined">celebration</span>
-                    <div class="about-div2">
-                        <span>Birth date</span>
-                        <p>@accountDto.User.BirthDateTime</p>
-                    </div>
-                </div>
-
-                <div class="about-div1">
-                    <span class="material-symbols-outlined">pets</span>
-                    <div class="about-div2">
-                        <span>Zodiac sign</span>
-                        <p>@ZodiacSign.GetZodiacSign(accountDto.User)</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="about-me image-uris">
-                @foreach (var image in accountDto.ImageUris)
+            <div style="display: flex; flex-direction: row; margin-top: 230px;">
+                @if (!accountDto.ImageUris.Any())
                 {
-                    <img src="@image">
+                    <img class="profile-image"
+                        src="https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg">
                 }
+                else
+                {
+                    <img class="profile-image" src="@accountDto.ImageUris.First()">
+                }
+
+                <div class="name-age">
+                    <span>@accountDto.User.Username <button @onclick=ShowUpdateUsername><span
+                                class="material-symbols-outlined">edit</span></button></span>
+                    <span>@accountDto.User.Age years old</span>
+                    <span
+                        style="color: #000; margin-top: 20px; font-weight: lighter; font-size: 17px;">@accountDto.User.Description</span>
+
+                    <div class="change-form">
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <h1>Username, Description</h1>
+                            <button @onclick=CloseUpdateUsername class="exit"><span
+                                    class="material-symbols-outlined">close</span></button>
+                        </div>
+
+                        <InputText class="input" @bind-Value=accountDto.User.Username></InputText>
+                        <InputText class="input" @bind-Value=accountDto.User.Description></InputText>
+
+                        <p style="position: absolute; color: red; font-size: 17px; font-weight: lighter;">@ErrorText</p>
+                        <div>
+                            <button @onclick=CloseUpdateUsername class="cancel">Cancel</button>
+                            <button @onclick=SaveAndCloseUsername class="save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about">
+                <div class="about-me">
+                    <h2>FACTFLILE</h2>
+
+                    <div class="about-div1">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <div class="about-div2">
+                            <span>City of residence</span>
+                            <p>@accountDto.User.Address.Country , @accountDto.User.Address.City ,
+                                @accountDto.User.Address.State</p>
+                        </div>
+                    </div>
+
+                    <div class="about-div1">
+                        <span class="material-symbols-outlined">interests</span>
+                        <div class="about-div2">
+                            <span>Interests</span>
+                            <p>@accountDto.User.Interests</p>
+                        </div>
+                    </div>
+
+                    <div class="about-div1">
+                        <span class="material-symbols-outlined">mail</span>
+                        <div class="about-div2">
+                            <span>Personal mailing address</span>
+                            <p>@accountDto.User.Email</p>
+                        </div>
+                    </div>
+
+                    <div class="about-div1">
+                        @if (accountDto.User.Gender == Gender.Male)
+                        {
+                            <span class="material-symbols-outlined">male</span>
+                        }
+                        else
+                        {
+                            <span class="material-symbols-outlined">font-sizemale</span>
+                        }
+                        <div class="about-div2">
+                            <span>Gender</span>
+                            <p>@accountDto.User.Gender</p>
+                        </div>
+                    </div>
+
+                    <div class="about-div1">
+                        <span class="material-symbols-outlined">celebration</span>
+                        <div class="about-div2">
+                            <span>Birth date</span>
+                            <p>@accountDto.User.BirthDateTime</p>
+                        </div>
+                    </div>
+
+                    <div class="about-div1">
+                        <span class="material-symbols-outlined">pets</span>
+                        <div class="about-div2">
+                            <span>Zodiac sign</span>
+                            <p>@accountDto.User.GetZodiacSign()</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="about-me image-uris">
+                    @foreach (var image in accountDto.ImageUris)
+                    {
+                        <img src="@image">
+                    }
+                </div>
             </div>
         </div>
-    </div>
-</EditForm>
+    </EditForm>
+}
 
 @code {
     public async Task CloseUpdateUsername()
