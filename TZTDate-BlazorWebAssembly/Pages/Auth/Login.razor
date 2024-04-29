@@ -18,10 +18,10 @@
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="inputBx">
-                    <InputText name="email" @bind-Value=loginDto.Email></InputText>
+                    <InputText placeholder="Email" type="email" name="email" @bind-Value=loginDto.Email></InputText>
                 </div>
                 <div class="inputBx">
-                    <InputText name="password" type="password" @bind-Value=loginDto.Password>
+                    <InputText placeholder="Password" name="password" type="password" @bind-Value=loginDto.Password>
                     </InputText>
                 </div>
                 <div class="inputBx">

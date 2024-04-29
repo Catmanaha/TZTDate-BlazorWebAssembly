@@ -1,0 +1,194 @@
+.details-img-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+    user-select: none;
+    margin: 0 150px;
+}
+
+.details-img-div a {
+    margin-bottom: 30px;
+    margin-top: 18px;
+    color: #fff;
+    background-color: #346931;
+    text-decoration: none;
+    width: 400px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    user-select: none;
+}
+
+.details-img-div a:hover {
+    transition: 0.4s ease;
+    background-color: #094206;
+    user-select: none;
+}
+
+.details-img-div img {
+    width: calc(33.33% - 20px);
+    height: 150px;
+    width: 150px;
+    margin-bottom: 20px;
+    object-fit: contain;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.details-divs {
+    display: flex;
+    margin: 0 150px;
+    flex-direction: row;
+    justify-content: space-between;
+    user-select: none;
+    box-shadow: 0 0 10px #cfcfcf;
+    padding: 30px;
+    border-radius: 25px;
+}
+
+.interests {
+    display: flex;
+    flex-direction: column;
+    background-color: #ededed;
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    width: 400px;
+    user-select: none;
+}
+
+.looking-for {
+    display: flex;
+    flex-direction: column;
+    background-color: #ededed;
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    width: 400px;
+    user-select: none;
+}
+
+.details-about-me {
+    display: flex;
+    flex-direction: column;
+    background-color: #ededed;
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    width: 400px;
+    user-select: none;
+}
+
+.details-divs b {
+    font-size: 20px;
+    user-select: none;
+}
+
+.zodiac-entities {
+    margin-left: 15%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 70%;
+    user-select: none;
+    border-radius: 10px;
+}
+
+
+
+.zodiac-entities:hover {
+    background-color: #45a049;
+}
+
+.zodiac-entities h2,
+.zodiac-entities h3 {
+    margin: 0;
+}
+
+.relationship-calc-entities {
+    margin-left: 35%;
+    margin-bottom: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 30%;
+    pointer-events: none;
+    border-radius: 10px;
+    user-select: none;
+}
+
+.calc-result {
+    font-size: xx-large;
+    color: yellow;
+}
+
+.chat-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 50%;
+    background-color: #17e41b;
+    color: #333;
+
+    &:hover {
+        background-color: #cfcfcf;
+    }
+}
+
+.like-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #17e41b;
+    color: #333;
+
+    &.liked {
+        background-color: #ff4d4d;
+        color: #fff;
+    }
+
+    &:hover {
+        background-color: #cfcfcf;
+    }
+}
+
+.container-calc-like {
+    display: flex;
+}
+
+.zodiac-sign {
+    font-weight: 900;
+    text-shadow: 4px 4px 8px rgba(255, 0, 0, 0.7);
+    font-style: italic;
+    color: red;
+}
+
+.about-div1 .material-symbols-outlined:hover {
+    color: rgb(255, 64, 201);
+    cursor: pointer;
+}
+
+.details-about {
+    margin: 30px 150px;
+}

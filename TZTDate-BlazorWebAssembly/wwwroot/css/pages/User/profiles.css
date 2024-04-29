@@ -11,10 +11,16 @@
 .profiles-container {
     display: flex;
     flex-wrap: wrap;
-    width: 99vw;
     gap: 50px;
-    padding: 30px 150px 30px 150px;
+    margin-top: 100px;
+    padding: 10px 150px 30px 150px;
     text-align: center;
+}
+
+.profiles-container a {
+    box-shadow: 0px 0px 10px #dfdfdf;
+    border: 1px solid #dfdfdf;
+    border-radius: 25px;
 }
 
 .profiles-container img {
@@ -55,9 +61,8 @@
 }
 
 .search1 {
-    position: absolute;
-    margin-right: -20px;
-    margin-top: 23px;
+    position: fixed;
+    top: 25px;
     left: 50%;
     height: 40px;
 	padding: 0.8em 1.8em;
@@ -68,8 +73,7 @@
 	cursor: pointer;
 	z-index: 999;
 	transition: 0.3s;
-	overflow:hidden ;
-	position: relative;
+	overflow: hidden;
 }
 
 .search1:before {
@@ -87,7 +91,7 @@
 }
 
 .search1:hover::before {
-	width: 200%;
+	width: 100px;
 }
 
 .search1:hover {
@@ -104,14 +108,14 @@
 }
 
 .profiles-search-div {
-    padding: 30px;
+    padding: 50px 30px 30px 30px;
     position: fixed;
     height: 500px;
     width: 800px;
     background-color: #ffffff;
     box-shadow: 0px 0px 10px #b7b7b7;
     margin-left: 350px;
-    margin-top: 80px;
+    top: 20%;
     border-radius: 30px;
     z-index: 1000;
     display: none;
@@ -126,7 +130,7 @@
     justify-content: space-between;
     word-wrap: normal;
     box-shadow: 0px 0px 3px #b7b7b7;
-    padding: 10px 10px;
+    padding: 20px 10px 10px 10px;
     border-radius: 7px;
     width: 100%;
 }
@@ -137,7 +141,7 @@
     justify-content: space-between;
     word-wrap: normal;
     box-shadow: 0px 0px 3px #b7b7b7;
-    padding: 10px 10px;
+    padding: 20px 10px 10px 10px;
     border-radius: 7px;
     width: 100%;
 }
@@ -146,13 +150,10 @@
     width: 70%;
 }
 
-.profiles-search-div .gender label {
-    margin-top: 11px;
-}
-
 .profiles-search-div .gender button {
     width: 60px;
     margin-left: 10px;
+    margin-top: -10px;
 }
 
 .profiles-search-div .gender span {
@@ -215,4 +216,44 @@
 
 .show-matches:hover::before {
     width: 100%;
+}
+
+.exit {
+    color: #474747;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 15px;
+    margin-top: 15px;
+    background-color: transparent;
+    border: none;
+}
+
+.exit:hover,
+.exit span:hover {
+    color: red;
+    transition: 0.2s;
+}
+
+.no-profiles-div {
+    display: flex;
+    height: 100vh; 
+    align-items: center; 
+    text-align: center; 
+    place-items: center; 
+    justify-content: center; 
+    flex-direction: column;
+    margin-left: 55px;
+}
+
+.no-profiles-div h2 {
+    font-weight: bold; 
+    font-size: 50px;
+}
+
+.no-profiles-div h2 span {
+    font-size: 100px;
+    margin-top: -20px;
+    position: absolute;
+    margin-left: -110px;
 }
