@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using TZTDateBlazorWebAssembly.DelegateHandlers;
 using TZTDateBlazorWebAssembly.Services;
 using TZTDateBlazorWebAssembly.Services.Base;
 
@@ -14,11 +15,11 @@ public static class HttpClients
             o.DefaultRequestHeaders.Add("X-CSCAPI-KEY", configuration["CountryApi:Key"]);
         });
 
-        services.AddHttpClient<IWebApiService, WebApiService>(o =>
+        services.AddHttpClient<IWebApiService, WebApiService>(async (serviceProvider, o) =>
         {
             o.BaseAddress = new Uri(configuration["WebApi:Url"]);
-        });
-        
+        }).AddHttpMessageHandler<AuthorizationHandler>();
+
         services.AddHttpClient<ICorsApiService, CorsApiService>(o =>
         {
             o.BaseAddress = new Uri(configuration["CorsApi:Url"]);

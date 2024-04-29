@@ -5,9 +5,12 @@
 <PageTitle>Details</PageTitle>
 
 <div class="details-img-div">
-    @foreach (var profilePicPath in ProfilePicPaths)
+    @if (ProfilePicPaths != null)
     {
-        <img src="@profilePicPath" alt="profile-pic">
+        @foreach (var profilePicPath in ProfilePicPaths)
+        {
+            <img src="@profilePicPath" alt="profile-pic">
+        }
     }
     <br>
 </div>
@@ -15,33 +18,36 @@
 <div class="details-divs">
     <div class="interests">
         <label><b>My Interests</b></label>
-        <p style="margin-top: 20px;">@ViewedUser.Interests</p>
+        <p style="margin-top: 20px;">@ViewedUser?.Interests</p>
     </div>
     <div class="about-me">
         <label><b>About Me</b></label>
-        <p style="margin-top: 20px;"><strong>Live in: </strong> @ViewedUser.Address.Country</p>
-        <p style="margin-top: 20px;"><strong>Live in: </strong> @ViewedUser.Address.State</p>
-        <p style="margin-top: 20px;"><strong>Live in: </strong> @ViewedUser.Address.City</p>
-        <p><strong>Name: </strong> @ViewedUser.Username</p>
-        <p><strong>Email: </strong> @ViewedUser.Email</p>
-        <p><strong>Gender: </strong> @ViewedUser.Gender</p>
+        <p style="margin-top: 20px;"><strong>Live in: </strong> @ViewedUser?.Address.Country</p>
+        <p style="margin-top: 20px;"><strong>Live in: </strong> @ViewedUser?.Address.State</p>
+        <p style="margin-top: 20px;"><strong>Live in: </strong> @ViewedUser?.Address.City</p>
+        <p><strong>Name: </strong> @ViewedUser?.Username</p>
+        <p><strong>Email: </strong> @ViewedUser?.Email</p>
+        <p><strong>Gender: </strong> @ViewedUser?.Gender</p>
     </div>
     <div class="looking-for">
         <label><b>I'm Looking For</b></label>
         <p style="margin-top: 20px;">
-            <strong>Searching For Ages Between: </strong>@ViewedUser.SearchingAgeStart and
-            @ViewedUser.SearchingAgeEnd
+            <strong>Searching For Ages Between: </strong>@ViewedUser?.SearchingAgeStart and
+            @ViewedUser?.SearchingAgeEnd
         </p>
-        <p><strong>Searching For: </strong> @ViewedUser.SearchingGender</p>
-        <p>@ViewedUser.Description</p>
+        <p><strong>Searching For: </strong> @ViewedUser?.SearchingGender</p>
+        <p>@ViewedUser?.Description</p>
     </div>
 </div>
 
 <div class="zodiac-entities">
     <h2>Zodiac sign compatibility</h2>
+    @if (CurrentUser != null && ViewedUser != null)
+{
     <h3><span class="zodiac-sign">@CurrentUser.GetZodiacSign()</span> @ZodiacCompatibility.Type <span
             class="zodiac-sign">@ViewedUser.GetZodiacSign()</span></h3>
-    <div>@ZodiacCompatibility.Description</div>
+}
+    <div>@ZodiacCompatibility?.Description</div>
 </div>
 
 <div class="container-calc-like">
@@ -57,10 +63,10 @@
             @(LikeButtonState ? "Unlike" : "Like")
         </button>
         @* <form id="" asp-controller="" asp-action="" method="">
-            <input type="hidden" name="" value="" />
-            <button @onclick="ChatButtonClick" class="chat-button" @(ReplicateMembership ? "" : "hidden")>
-                Chat
-            </button>
+        <input type="hidden" name="" value="" />
+        <button @onclick="ChatButtonClick" class="chat-button" @(ReplicateMembership ? "" : "hidden")>
+        Chat
+        </button>
         </form> *@
     </div>
 </div>
@@ -210,6 +216,7 @@
         margin: 50%;
         background-color: #17e41b;
         color: #333;
+
         &:hover {
             background-color: #cfcfcf;
         }
@@ -225,10 +232,12 @@
         margin: 50%;
         background-color: #17e41b;
         color: #333;
+
         &.liked {
             background-color: #ff4d4d;
             color: #fff;
         }
+
         &:hover {
             background-color: #cfcfcf;
         }
