@@ -32,6 +32,12 @@ public class WebApiService : IWebApiService
         this.httpClient = httpClient;
     }
 
+    public async Task<CompanionsDto> GoToChat(int currentUserId, int companionId)
+    {
+        var response = await this.httpClient.PostAsJsonAsync<CompanionsDto>($"Chat/PrivateChat?companionId={companionId}&currentUserId={currentUserId}", null);
+        return await response.Content.ReadFromJsonAsync<CompanionsDto>() ?? new CompanionsDto();
+    }
+
     public async Task SetMembership(int currentUserId, int viewedUserId)
     {
         await this.httpClient.PostAsync($"User/MembershipAction?currentUserId={currentUserId}&userToActionId={viewedUserId}", null);
