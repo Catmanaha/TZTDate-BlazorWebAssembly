@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MongoDB.Driver;
 using TZTDateBlazorWebAssembly.Dtos;
 using TZTDateBlazorWebAssembly.Models;
 using TZTDateBlazorWebAssembly.Services.Base;
@@ -66,19 +67,19 @@ public partial class RegisterBase : ComponentBase
         await identityService.Register(UserRegisterDto);
     }
 
-    public void UpdateInterests(string interest, bool isChecked)
-{
-    InterestsList.FirstOrDefault(o => o.Label == interest).IsChecked = isChecked;
+    public async Task UpdateInterests(string interest, bool isChecked)
+    {
+        InterestsList.FirstOrDefault(o => o.Label == interest).IsChecked = isChecked;
 
-    if (isChecked)
-    {
-        UserRegisterDto.Interests.Add(interest);
+        if (isChecked)
+        {
+            UserRegisterDto.Interests.Add(interest);
+        }
+        else
+        {
+            UserRegisterDto.Interests.Remove(interest);
+        }
     }
-    else
-    {
-        UserRegisterDto.Interests.Remove(interest);
-    }
-}
 
     public void NavigateToFormStep(int stepNumber)
     {
