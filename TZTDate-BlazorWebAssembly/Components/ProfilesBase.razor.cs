@@ -21,7 +21,9 @@ public class ProfilesBase : ComponentBase
     public ProfilesDto? profiles { get; set; }
 
     [Inject]
-    private IWebApiService webApiService { get; set; }
+    private IIdentityService identityService { get; set; }
+    [Inject]
+    private IUserWebApiService userWebApiService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,8 +36,8 @@ public class ProfilesBase : ComponentBase
 
     private async Task<ProfilesDto> GetProfiles()
     {
-        var id = await webApiService.GetUserIdFromJwt();
-        return await webApiService.GetProfiles(id, SearchingByName, SearchingStartAge, SearchingEndAge, SearchingInterests, SearchingGender);
+        var id = await identityService.GetUserIdFromJwt();
+        return await userWebApiService.GetProfiles(id, SearchingByName, SearchingStartAge, SearchingEndAge, SearchingInterests, SearchingGender);
     }
 
     public async Task FilterSearch()

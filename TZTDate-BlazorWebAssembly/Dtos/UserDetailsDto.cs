@@ -11,4 +11,7 @@ public class UserDetailsDto
     public User ViewedUser { get; set; }
     [JsonPropertyName("imageUris")]
     public List<string> ImageUris { get; set; }
+    [JsonPropertyName("interests")]
+    public string Interests { get; set; }
+
 }

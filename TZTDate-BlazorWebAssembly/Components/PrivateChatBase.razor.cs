@@ -13,8 +13,10 @@ public class PrivateChatBase : ComponentBase
     private HubConnection hubConnection;
     [Inject]
     private IWebApiService webApiService { get; set; }
-    [Parameter] public int CompanionId { get; set; }
-    [Parameter] public int CurrentUserId { get; set; }
+    [Parameter] 
+    public int CompanionId { get; set; }
+    [Parameter] 
+    public int CurrentUserId { get; set; }
     public PrivateChat CurrentPrivateChat { get; set; }
     public string CurrentUserName { get; set; }
     public List<Message> Messages { get; set; }
@@ -23,17 +25,19 @@ public class PrivateChatBase : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+
+
         hubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5000/chat")
             .Build();
 
         hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-    {
-    var newMessage = new Message { Owner = user, Content = message, PrivateChatId = CurrentPrivateChat.Id };
-    Messages.Add(newMessage);
+            {
+                var newMessage = new Message { Owner = user, Content = message, PrivateChatId = CurrentPrivateChat.Id };
+                Messages.Add(newMessage);
 
-    InvokeAsync(StateHasChanged);
-    });
+                InvokeAsync(StateHasChanged);
+            });
 
         await hubConnection.StartAsync();
         ChatDto = await GetChatData();

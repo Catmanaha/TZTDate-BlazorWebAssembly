@@ -20,11 +20,22 @@ public static class HttpClients
             o.BaseAddress = new Uri(configuration["WebApi:Url"]);
         }).AddHttpMessageHandler<AuthorizationHandler>();
 
+        services.AddHttpClient<IIdentityService, IdentityWebApiService>(async (serviceProvider, o) =>
+        {
+            o.BaseAddress = new Uri(configuration["IdentityApi:Url"]);
+        }).AddHttpMessageHandler<AuthorizationHandler>();
+
+        services.AddHttpClient<IUserWebApiService, UserWebApiService>(async (serviceProvider, o) =>
+       {
+           o.BaseAddress = new Uri(configuration["UserApi:Url"]);
+       }).AddHttpMessageHandler<AuthorizationHandler>();
+
         services.AddHttpClient<ICorsApiService, CorsApiService>(o =>
         {
             o.BaseAddress = new Uri(configuration["CorsApi:Url"]);
             o.DefaultRequestHeaders.Add("origin", configuration["CorsApi:Origin"]);
         });
+
         services.AddHttpClient("ZodiacSign", o =>
         {
             o.BaseAddress = new Uri(HostEnvironment.BaseAddress);

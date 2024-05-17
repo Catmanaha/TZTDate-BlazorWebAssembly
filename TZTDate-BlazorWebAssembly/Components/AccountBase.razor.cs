@@ -8,12 +8,15 @@ namespace TZTDateBlazorWebAssembly.Components;
 public class AccountBase : ComponentBase
 {
     [Inject]
-    private IWebApiService webApiService { get; set; }
+    private IIdentityService identityService { get; set; }
+    [Inject]
+    private IUserWebApiService userWebApiService { get; set; }
     public AccountDto? accountDto { get; set; }
     public string? ErrorText { get; set; }
+    public string? MyInterests { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        string myId = await webApiService.GetUserIdFromJwt();
+        string myId = await identityService.GetUserIdFromJwt();
 
         string json = await GetAccountDataAsync(myId);
 
@@ -22,12 +25,12 @@ public class AccountBase : ComponentBase
 
     public async Task<string> GetAccountDataAsync(string id)
     {
-        return await webApiService.GetAccountData(int.Parse(id));
+        return await userWebApiService.GetAccountData(int.Parse(id));
     }
 
     public async Task<string> ChangeUsernameAsync()
     {
-        string message = await webApiService.UpdateUsernameAsync(accountDto.User.Username, accountDto.User.Description);
+        string message = await userWebApiService.UpdateUsernameAsync(accountDto.User.Username, accountDto.User.Description);
 
         if (message is null) {
             return null;

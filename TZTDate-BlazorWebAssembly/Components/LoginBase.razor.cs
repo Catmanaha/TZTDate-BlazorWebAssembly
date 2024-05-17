@@ -11,14 +11,14 @@ public class LoginBase : ComponentBase
     private NavigationManager navigationManager { get; set; }
 
     [Inject]
-    private IWebApiService webApiService { get; set; }
+    private IIdentityService identityService { get; set; }
 
     public UserLoginDto loginDto { get; set; } = new();
     public string? ErrorText { get; set; }
 
     public async Task OnLoginFormSubmitAsync(EditContext editContext)
     {
-        var text = await webApiService.Login(loginDto);
+        var text = await identityService.Login(loginDto);
 
         if (text == null)
         {

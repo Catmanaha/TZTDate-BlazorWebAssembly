@@ -45,7 +45,7 @@ public class UserRegisterDto
     public int SearchingAgeEnd { get; set; }
 
     [Required(ErrorMessage = "Interests cannot be empty")]
-    public string Interests { get; set; }
+    public List<string> Interests { get; set; }
     public byte[]? Image1 { get; set; }
     public string Image1Name { get; set; }
     public byte[]? Image2 { get; set; }

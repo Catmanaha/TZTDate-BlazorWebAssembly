@@ -12,7 +12,7 @@ public partial class RegisterBase : ComponentBase
     public List<SelectListItem> CountryOptions { get; set; } = new();
     public List<City> CityOptions { get; set; } = new();
     public List<SelectListItem> StateOptions { get; set; } = new();
-    public UserRegisterDto UserRegisterDto { get; set; } = new();
+    public UserRegisterDto UserRegisterDto { get; set; } = new UserRegisterDto { Interests = new List<string>() };
     public int CurrentStep { get; set; } = 1;
     public List<string> StepLabels { get; set; } = new List<string> { "User Details", "Location", "Preferences", "Photos" };
     private string SelectedCountryCode { get; set; }
@@ -21,13 +21,13 @@ public partial class RegisterBase : ComponentBase
             "Sport", "Games", "Traveling", "Reading", "Cooking", "Hiking", "Photography", "Music", "Painting", "Writing", "Gardening", "Yoga", "Meditation", "Astronomy", "Dancing", "Film-making", "Bird-watching", "Knitting", "Surfing", "Scuba diving", "Chess", "Calligraphy", "Watching TV", "Nature", "Shopping", "Fashion", "Dancing", "Diving", "Smoking", "Capming", "Cars", "Sailing", "Party & Night Clubs", "Movies", "Museums", "Art", "Eating", "Swimming", "Youtube Watching", "Chatting"
         };
     public List<CheckboxListItem> InterestsList { get; set; }
-    private StringBuilder InterestsStringBuilder { get; set; } = new(100);
+    private List<string> InterestsArray { get; set; } = new List<string>();
 
     [Inject]
     private ICountryApiService CountryApiService { get; set; }
 
     [Inject]
-    private IWebApiService WebApiService { get; set; }
+    private IIdentityService identityService { get; set; }
 
     [Inject]
     private NavigationManager NavigationManager { get; set; }
@@ -63,24 +63,22 @@ public partial class RegisterBase : ComponentBase
 
     private async Task RegisterUserAsync()
     {
-        await WebApiService.Register(UserRegisterDto);
+        await identityService.Register(UserRegisterDto);
     }
 
     public void UpdateInterests(string interest, bool isChecked)
-    {
-        InterestsList.FirstOrDefault(o => o.Label == interest).IsChecked = isChecked;
+{
+    InterestsList.FirstOrDefault(o => o.Label == interest).IsChecked = isChecked;
 
-        if (isChecked)
-        {
-            InterestsStringBuilder.Append(interest + " ");
-            UserRegisterDto.Interests = InterestsStringBuilder.ToString();
-        }
-        else
-        {
-            InterestsStringBuilder.Remove(InterestsStringBuilder.ToString().IndexOf(interest + " "), interest.Length + 1);
-            UserRegisterDto.Interests = InterestsStringBuilder.ToString();
-        }
+    if (isChecked)
+    {
+        UserRegisterDto.Interests.Add(interest);
     }
+    else
+    {
+        UserRegisterDto.Interests.Remove(interest);
+    }
+}
 
     public void NavigateToFormStep(int stepNumber)
     {

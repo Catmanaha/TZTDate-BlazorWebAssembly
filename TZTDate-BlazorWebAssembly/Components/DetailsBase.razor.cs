@@ -25,7 +25,9 @@ public class DetailsBase : ComponentBase
     protected bool ReplicateMembership;
 
     [Inject]
-    private IWebApiService webApiService { get; set; }
+    private IIdentityService identityService { get; set; }
+    [Inject]
+    private IUserWebApiService userWebApiService { get; set; }
     [Inject]
     private NavigationManager Navigation { get; set; }
 
@@ -47,9 +49,9 @@ public class DetailsBase : ComponentBase
 
     private async Task<UserDetailsDto> GetDetails()
     {
-        var currentUserIdString = await webApiService.GetUserIdFromJwt();
+        var currentUserIdString = await identityService.GetUserIdFromJwt();
         var a = int.TryParse(currentUserIdString, out var currentUserId);
-        return await webApiService.GetDetails(currentUserId, this.ViewedUserId);
+        return await userWebApiService.GetDetails(currentUserId, this.ViewedUserId);
     }
 
 
@@ -58,12 +60,12 @@ public class DetailsBase : ComponentBase
         LikeButtonState = !LikeButtonState;
         if (LikeButtonState)
         {
-            await webApiService.SetMembership(CurrentUser.Id, ViewedUser.Id);
+            await userWebApiService.SetMembership(CurrentUser.Id, ViewedUser.Id);
 
         }
         else
         {
-            await webApiService.SetMembership(CurrentUser.Id, ViewedUser.Id);
+            await userWebApiService.SetMembership(CurrentUser.Id, ViewedUser.Id);
 
         }
 
